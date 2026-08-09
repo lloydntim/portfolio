@@ -1,8 +1,18 @@
 # Agentic Engineering Workflow Specification
 
 **Owner:** Lloyd Ntim
-**Status:** Draft v0.1
+**Status:** Draft v0.2
 **Purpose:** Define the AI-assisted software delivery process used for the portfolio project and reusable across future product and engineering work.
+
+## Document boundaries
+
+This document defines the reusable Agentic Engineering delivery process.
+
+- `AGENTS.md` defines the repository-wide operating rules and approval boundaries for coding agents.
+- `CLAUDE.md` provides a concise Claude Code entry point and refers back to `AGENTS.md`.
+- Approved product, feature, and architecture specifications define what should be built.
+
+These documents should reference one another rather than duplicate the same detailed instructions.
 
 ## 1. Objective
 
@@ -203,7 +213,7 @@ These are responsibilities, not mandatory permanent agents. A simple change shou
 
 **Implementation standard**
 
-For the portfolio, the core stack is TypeScript, Next.js, React, and Node.js. The implementation should use the simplest architecture that meets the approved specification.
+For the portfolio, the core stack is TypeScript, Next.js, React, Node.js, Tailwind CSS, and pnpm. The implementation should use the simplest architecture that meets the approved specification.
 
 **Exit criteria**
 
@@ -369,7 +379,7 @@ A dedicated workflow page may explain the nine stages through one practical proj
 
 ### Repository records
 
-The portfolio repository should eventually contain:
+The portfolio repository may eventually contain records such as:
 
 ```text
 AGENTS.md
@@ -386,7 +396,7 @@ docs/
   coaching-guide.md
 ```
 
-The traceability chain for a selected feature should be:
+The final folder structure requires approval before scaffolding. The traceability chain for a selected feature should be:
 
 ```text
 Requirement
@@ -405,13 +415,13 @@ The portfolio will be delivered using this workflow.
 
 ### Product objective
 
-Create a brief online resume presenting Lloyd as a Full-Stack Developer, Product Designer, and Agentic Engineer.
+Create a brief online resume presenting Lloyd across Product Engineering, Full-Stack Engineering, Software Engineering, and Agentic Engineering.
 
 ### Required public sections
 
 - Introduction and positioning
 - Short experience summary
-- Three selected projects: VocApp, Vorwerk, and E.ON
+- Three selected projects: VocApp, Vorwerk, and Guilds
 - Compact professional experience
 - Technical and product capabilities
 - Agentic Engineering workflow
@@ -431,6 +441,7 @@ Create a brief online resume presenting Lloyd as a Full-Stack Developer, Product
 - English, German, and French routes with a consistent content structure
 - Locale-aware navigation, metadata, and language selection
 - A static content model that can later be replaced by a headless CMS without redesigning the site
+- User-facing error, validation, success, and fallback states that follow the prototype's visual language
 
 ## 12. Definition of done
 
@@ -451,9 +462,13 @@ A portfolio feature is done only when:
 
 - Use the existing static HTML, JavaScript, images, and copy as the visual and content prototype.
 - Rebuild the approved prototype as a maintainable TypeScript and Next.js application.
+- Use Tailwind CSS as the primary styling system with global design tokens.
 - Provide English, German, and French versions through an i18n content structure.
 - Keep case-study content local and static.
 - Include the concise online resume, selected work, workflow summary, CV, and contact path.
+- Use the English CV for the initial release and add the German CV later.
+- Deploy the approved production build to Netlify.
+- Include appropriate user-facing error handling without adding centralized monitoring or analytics.
 
 ### Phase 2: Headless content management
 
@@ -466,16 +481,19 @@ A portfolio feature is done only when:
 
 - Add a runtime Agent SDK application only when a useful product scenario has been selected.
 - Add further automation or content workflows when they solve a recurring need.
+- Add privacy-conscious analytics, centralized error monitoring, logging, and uptime monitoring after the first release.
 
 ## 14. Open decisions
 
-The following decisions are intentionally deferred:
+The following decisions or inputs are intentionally deferred:
 
-- The exact public title and positioning language
-- The hourly rate and whether it should appear publicly
+- Final approved content for the VocApp, Vorwerk, and Guilds case studies
+- The English CV file and later German CV file
+- The approved UK and German telephone numbers
+- The exact application folder structure and detailed code conventions
+- The contact-form implementation approach
 - The Agent SDK and cloud platform used for a future runtime agent capability
 - Which portfolio feature will provide the first complete traceability chain
-- Which professional details and project assets may be shown publicly
-- The final domain and contact method
+- The analytics and monitoring tools used after the first release
 
 These decisions should be resolved before their affected implementation stage, not guessed by an agent.
