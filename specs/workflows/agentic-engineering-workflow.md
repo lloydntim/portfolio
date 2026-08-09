@@ -1,7 +1,7 @@
 # Agentic Engineering Workflow Specification
 
 **Owner:** Lloyd Ntim
-**Status:** Draft v0.2
+**Status:** Draft v0.3
 **Purpose:** Define the AI-assisted software delivery process used for the portfolio project and reusable across future product and engineering work.
 
 ## Document boundaries
@@ -314,6 +314,23 @@ Human approval is required before:
 - Deploying to production
 
 Agents may recommend these actions but do not grant themselves permission.
+
+### Execution mode
+
+Use Plan mode for architecture, substantial features, and changes requiring design or technical decisions.
+
+After the plan is approved, use automatic edit approval for bounded local implementation so the agent can complete the stage without per-file interruption.
+
+Manual approval remains required for:
+
+- Scope expansion
+- Material architecture changes
+- Risky dependencies
+- Destructive operations
+- Pushes and merges
+- Production deployments
+
+Automatic edit approval does not authorize the agent to begin a later project stage.
 
 ## 8. Harnesses and Agent SDKs
 

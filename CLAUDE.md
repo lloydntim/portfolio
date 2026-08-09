@@ -151,3 +151,31 @@ For substantial completed work, report:
 - Required approvals
 
 Do not use em dashes unless Lloyd explicitly requests them.
+
+## Autonomous execution after approval
+
+After Lloyd approves a bounded plan, continue independently until the complete approved stage and its acceptance criteria are finished.
+
+Do not stop after each file or individual change.
+
+Within the approved scope, you may:
+
+- Edit relevant local files
+- Run appropriate checks
+- Review and correct your own work
+- Resolve straightforward implementation issues
+- Update related documentation
+
+Stop and request direction only when:
+
+- Requirements conflict or remain materially ambiguous
+- The work would exceed the approved scope
+- A risky dependency or architecture change is required
+- A destructive action is required
+- A push or merge is required
+- A manual external preview deployment is required
+- A production deployment or promotion is required
+
+An approved push may automatically trigger a Netlify preview deployment. That automatic preview does not require a second approval. Production promotion always requires separate approval.
+
+Finish the stage with one completion report.
