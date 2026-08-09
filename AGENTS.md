@@ -257,8 +257,8 @@ Em dashes are prohibited in all content, documentation, code comments, commit me
 The approved case-study selection is:
 
 1. VocApp, a vocabulary app for AnzaKen
-2. Guilds
-3. Vorwerk
+2. Vorwerk
+3. Guilds
 
 The current case-study narratives in the prototype are not approved factual content.
 
