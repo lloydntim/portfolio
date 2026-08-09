@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Studies — Lloyd Ntim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="anzaken" style="background:#151517;color:#f4f2ef">
+
+  <!-- nav -->
+  <div class="site-nav" style="position:static">
+    <div class="nav-inner">
+      <img src="assets/logo.svg" alt="Lloyd Ntim" class="nav-logo">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html" class="nav-link" style="color:#fff">Home</a><a href="index.html#about" class="nav-link">About</a><a href="index.html#projects" class="nav-link" style="color:#c1121f">Projects</a><a href="index.html#contact" class="nav-link">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- header -->
+  <div class="container cs-header">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px"><span style="width:34px;height:3px;background:#c1121f"></span><span style="font:600 13px 'Open Sans',sans-serif;letter-spacing:2px;color:#e8636f">CASE STUDY</span></div>
+    <h1 class="cs-title">AnzaKen &mdash; connecting farmers to markets</h1>
+    <p style="font-size:17px;line-height:1.65;color:#c9c7c4;margin:0 0 32px">An agritech platform giving smallholder farmers direct access to buyers and financing &mdash; built from the mobile app down to the data pipeline behind it.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:32px 40px">
+      <div><div style="font:600 11px 'Open Sans',sans-serif;letter-spacing:2px;color:#8a8580;margin-bottom:6px">ROLE</div><div style="font:500 15px 'Montserrat',sans-serif">Full-stack &amp; product engineer</div></div>
+      <div><div style="font:600 11px 'Open Sans',sans-serif;letter-spacing:2px;color:#8a8580;margin-bottom:6px">TIMELINE</div><div style="font:500 15px 'Montserrat',sans-serif">8 months</div></div>
+      <div><div style="font:600 11px 'Open Sans',sans-serif;letter-spacing:2px;color:#8a8580;margin-bottom:6px">STACK</div><div style="font:500 15px 'Montserrat',sans-serif">React Native, Node.js, PostgreSQL</div></div>
+    </div>
+  </div>
+
+  <!-- cover image -->
+  <div class="ph cs-cover" style="background-color:#0e0e10;display:flex;align-items:center;justify-content:center;color:#7d7b78;font:500 13px 'Open Sans',sans-serif">[ cover image &mdash; AnzaKen app ]</div>
+
+  <!-- article body -->
+  <div style="background:#fbf9f6;color:#17171a">
+    <div class="cs-article">
+
+      <p style="font:500 20px/1.6 'Montserrat',sans-serif;color:#2c2c2f;margin:0 0 44px">Smallholder farmers across East Africa often sell through several layers of middlemen before produce reaches a buyer, losing margin and visibility at every step. AnzaKen set out to close that gap with a direct, mobile-first marketplace.</p>
+
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px"><span style="width:34px;height:3px;background:#c1121f"></span><span style="font:600 13px 'Open Sans',sans-serif;letter-spacing:2px;color:#c1121f">THE CHALLENGE</span></div>
+      <h2 class="cs-h2">Trust, connectivity and cash flow</h2>
+      <p style="font-size:16px;line-height:1.8;color:#3d3d42;margin:0 0 20px">Farmers needed a way to list produce and get paid reliably, often on low-end Android devices with unreliable connectivity. Buyers needed confidence that listings were accurate and that payment and delivery would actually happen. Any solution had to work offline-first and settle payments without requiring either side to hold a bank account.</p>
+      <p style="font-size:16px;line-height:1.8;color:#3d3d42;margin:0">On the business side, financing partners needed transaction data to underwrite short-term credit to farmers &mdash; which meant the platform had to produce clean, trustworthy records from day one.</p>
+
+      <div class="ph cs-screenshot" style="background-color:#efece6;display:flex;align-items:center;justify-content:center;color:#8b857c;font:500 12px 'Open Sans',sans-serif">[ screenshot &mdash; listing flow ]</div>
+
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px"><span style="width:34px;height:3px;background:#c1121f"></span><span style="font:600 13px 'Open Sans',sans-serif;letter-spacing:2px;color:#c1121f">THE APPROACH</span></div>
+      <h2 class="cs-h2">Offline-first, API-driven, built to scale</h2>
+      <p style="font-size:16px;line-height:1.8;color:#3d3d42;margin:0 0 20px">I built the mobile app in React Native with a local-first data layer that queues listings and orders when offline and syncs once connectivity returns. The backend is a Node.js API on PostgreSQL, with a separate service handling payment reconciliation and generating the transaction history financing partners rely on.</p>
+      <p style="font-size:16px;line-height:1.8;color:#3d3d42;margin:0">I also built the analytics dashboard the operations team uses to monitor listings, flag anomalies and track farmer onboarding across regions.</p>
+
+      <div style="padding:32px 0;margin:40px 0;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1)">
+        <p style="font:500 clamp(1.2rem,3vw,1.625rem)/1.5 'Montserrat',sans-serif;color:#17171a;margin:0;letter-spacing:-.3px">"The offline-first design meant farmers in low-connectivity regions could use the app exactly like everyone else &mdash; the sync just happened when it could."</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px"><span style="width:34px;height:3px;background:#c1121f"></span><span style="font:600 13px 'Open Sans',sans-serif;letter-spacing:2px;color:#c1121f">THE OUTCOME</span></div>
+      <h2 class="cs-h2">A platform ready for financing partners</h2>
+      <p style="font-size:16px;line-height:1.8;color:#3d3d42;margin:0 0 32px">AnzaKen launched across three regions with a transaction history clean enough for its first financing partner to begin underwriting farmer credit directly from platform data.</p>
+
+      <div class="cs-stats">
+        <div><div style="font:700 36px 'Montserrat',sans-serif;color:#c1121f;letter-spacing:-1px">3</div><div style="font-size:14px;color:#55534e;margin-top:6px">regions launched in</div></div>
+        <div><div style="font:700 36px 'Montserrat',sans-serif;color:#c1121f;letter-spacing:-1px">8mo</div><div style="font-size:14px;color:#55534e;margin-top:6px">idea to launch</div></div>
+        <div><div style="font:700 36px 'Montserrat',sans-serif;color:#c1121f;letter-spacing:-1px">1st</div><div style="font-size:14px;color:#55534e;margin-top:6px">financing partner onboarded</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- footer nav -->
+  <div style="background:#fbf9f6;padding:0 24px 60px">
+    <div class="cs-footer-nav">
+      <a href="index.html#projects" class="back-link" style="font:600 14px 'Montserrat',sans-serif">&larr; Back to projects</a>
+      <span style="font-size:14px;color:#8b857c">Next: Vorwerk &rarr;</span>
+    </div>
+  </div>
+
+  <div class="site-footer" style="background:#151517">
+    <span>&copy; 2026 Lloyd Ntim</span><span style="font-family:'Open Sans',sans-serif">info@lloydntim.com</span>
+  </div>
+
+</div>
+
+<!-- Vorwerk and AOE case studies are not built yet — replicate the #anzaken
+     section above (nav, header, cover image, article body, footer nav) with
+     each project's own copy and stats when written. Give each section a
+     matching id ("vorwerk", "aoe") so the index.html project card links
+     (case-studies.html#vorwerk, case-studies.html#aoe) resolve. -->
+
+<script src="script.js"></script>
+</body>
+</html>
