@@ -37,6 +37,12 @@ export const metadata: Metadata = {
   },
   description: 'Product, full-stack and agentic engineering for enterprise and consumer brands.',
   robots: { index: true, follow: true },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+  },
 };
 
 export function generateStaticParams() {
