@@ -63,7 +63,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html
       lang={await locale()}
-      className={`${montserrat.variable} ${roboto.variable} ${openSans.variable}`}
+      // scroll-pt-* offsets in-page anchor scrolling (nav links, hash URLs)
+      // by the fixed nav's height at each breakpoint, so the target section
+      // doesn't end up hidden behind it (Next.js docs: "Scroll offset with
+      // sticky headers"). scroll-smooth is overridden back to instant under
+      // prefers-reduced-motion by the global rule in globals.css.
+      className={`${montserrat.variable} ${roboto.variable} ${openSans.variable} scroll-smooth scroll-pt-16 md:scroll-pt-18 lg:scroll-pt-20`}
       suppressHydrationWarning
     >
       <head>

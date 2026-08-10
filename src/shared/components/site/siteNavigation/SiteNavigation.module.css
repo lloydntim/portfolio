@@ -24,7 +24,8 @@
 }
 
 .navLink:hover::after,
-.navLink:focus-visible::after {
+.navLink:focus-visible::after,
+.navLink[aria-current='page']::after {
   transform: scaleX(1);
 }
 
