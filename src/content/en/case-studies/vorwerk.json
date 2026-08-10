@@ -1,0 +1,27 @@
+{
+  "slug": "vorwerk",
+  "order": 2,
+  "title": "Vorwerk",
+  "summary": "A new frontend architecture for vorwerk.com, combining React server-side rendering in AEM with serverless deployment on AWS Lambda.",
+  "role": "Frontend Architect",
+  "timeline": "Jul 2024 – Jun 2025",
+  "stack": [
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Java",
+    "AEM",
+    "Vite SSR",
+    "AWS Lambda",
+    "GitLab CI/CD",
+    "Lighthouse",
+    "Pa11y"
+  ],
+  "challenge": "vorwerk.com's multi-market website needed SPA-style React delivery without losing the WYSIWYG authoring CMS editors relied on, on top of an existing Java/AEM codebase of models and servlets that had to keep driving consistent server/client rendering.",
+  "approach": "Designed and implemented a Vite-based React server-side rendering foundation for AEM, integrating with Java servlets to preserve WYSIWYG authoring while enabling SPA-style delivery. Analysed the existing Java models, servlets and JSON data exchange to keep client and server rendering consistent, then worked with solution and technical architects to automate GitLab CI/CD deployment of the React SSR build to AWS Lambda as part of the serverless hosting architecture. Improved component quality against internal WCAG 2.2 guidelines using Lighthouse and Pa11y during review.",
+  "outcome": "The new architecture underpins the production vorwerk.com site, reaching Lighthouse scores of 85–90+ while preserving seamless WYSIWYG authoring for CMS editors.",
+  "coverImage": {
+    "src": "/case-study-vorwerk.webp",
+    "alt": "Screenshot of the vorwerk.com homepage, showing a featured product and promotional banner"
+  }
+}

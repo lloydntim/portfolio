@@ -1,0 +1,43 @@
+/**
+ * Design tokens measured from reference/prototype (specs/prototype-analysis.md
+ * sections 5-7). Tailwind CSS 4 CSS-first configuration; no tailwind.config.ts.
+ */
+@theme {
+  /* Breakpoints: the prototype's six observed reference measurements
+     (specs/prototype-analysis.md section 7), pending final approval per
+     decision 7. Overriding Tailwind's defaults so xs/sm/md/lg/xl/2xl map
+     exactly onto them. */
+  --breakpoint-xs: 500px;
+  --breakpoint-sm: 560px;
+  --breakpoint-md: 700px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1600px;
+
+  /* Colours */
+  --color-bg-dark: #151517;
+  --color-bg-dark-panel: #0e0e10;
+  --color-bg-dark-panel-alt: #1a1a1d;
+  --color-bg-light: #fbf9f6;
+  --color-text-on-dark: #f4f2ef;
+  --color-text-on-light: #17171a;
+  --color-accent: #c1121f;
+  --color-accent-hover: #e8636f;
+  --color-accent-hover-strong: #a30f1a;
+  --color-accent-mid: #d43a47;
+  --color-eyebrow-muted: #e8636f;
+  --color-body-dark-muted: #a8a6a3;
+  --color-body-light: #3d3d42;
+  --color-body-light-muted: #55534e;
+  --color-footer-text: #838180;
+
+  /* Fonts: mapped onto the CSS variables next/font/google generates in
+     src/app/[locale]/layout.tsx. */
+  --font-heading: var(--font-montserrat);
+  --font-body: var(--font-roboto);
+  --font-label: var(--font-open-sans);
+
+  /* Container widths (specs/prototype-analysis.md section 6) */
+  --container-max: 1360px;
+  --container-max-wide: 1520px;
+}

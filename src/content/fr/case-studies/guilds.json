@@ -1,0 +1,26 @@
+{
+  "slug": "guilds",
+  "order": 3,
+  "title": "Guilds",
+  "summary": "Un portefeuille crypto pour le gaming mobile, conçu avec une petite équipe fondatrice, sur React Native, une application web compagnon React Native Web et un backend Python/FastAPI.",
+  "role": "Product Engineer",
+  "timeline": "mars 2022 – oct. 2022",
+  "stack": [
+    "React Native",
+    "TypeScript",
+    "SwiftUI",
+    "Python",
+    "FastAPI",
+    "REST APIs",
+    "PostgreSQL",
+    "SQL",
+    "pgAdmin"
+  ],
+  "challenge": "Au sein d'une petite équipe fondatrice, Guilds devait livrer un portefeuille crypto pour le gaming mobile à la fois sur mobile natif et sur une application web compagnon à partir d'une source unique de vérité, appuyé sur des API et des données fiables, en travaillant étroitement avec le CTO, l'ingénieur backend et le designer pour aligner les décisions produit et techniques.",
+  "approach": "Conception d'une bibliothèque de composants React Native réutilisable, partagée entre l'application mobile et un build compagnon React Native Web, stylisée avec Styled Components pour une cohérence visuelle entre les plateformes. Développement et mise à jour de services REST Python/FastAPI pour les workflows CRUD et les intégrations tierces, et travail direct avec PostgreSQL via SQL et pgAdmin pour valider l'état de l'application et résoudre les problèmes d'API et de données entre les clients mobiles et le backend.",
+  "outcome": "Livraison de fonctionnalités sur mobile, web et backend, du développement initial aux tests utilisateurs concrets jusqu'au premier lancement du produit.",
+  "coverImage": {
+    "src": "/case-study-guilds.webp",
+    "alt": "Captures d'écran de l'application mobile Guilds, montrant les écrans d'accueil, de portefeuille et de récompenses"
+  }
+}

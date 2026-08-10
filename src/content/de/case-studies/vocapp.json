@@ -1,0 +1,29 @@
+{
+  "slug": "vocapp",
+  "order": 1,
+  "title": "VocApp",
+  "summary": "Eine Mobile-first-Sprachlern-App mit API-Anbindung, von Grund auf für AnzaKen entwickelt – mit spielerischem Lernen, Übersetzung und Sprachausgabe.",
+  "role": "Senior Product Engineer",
+  "timeline": "Aug. 2025 – heute",
+  "stack": [
+    "React",
+    "Next.js",
+    "Node.js",
+    "Express",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis",
+    "JWT-Authentifizierung",
+    "Google Cloud Translation & Text-to-Speech",
+    "Docker",
+    "GitHub Actions",
+    "Sentry"
+  ],
+  "challenge": "AnzaKen brauchte ein produktionsreifes, API-basiertes Sprachlernprodukt – von sicherer Authentifizierung und validierten Daten bis zum zuverlässigen Deployment. KI-gestützte, spezifikationsbasierte Entwicklung sollte hohes Tempo ohne Qualitätsverlust ermöglichen.",
+  "approach": "Ich verantwortete die Full-Stack-Produktarchitektur: ein nach Features strukturiertes Next.js/React-Frontend und ein mehrschichtiges Node.js/Express-Backend (TypeScript) mit Routen, Controllern, Services und Repositories auf PostgreSQL und Redis. Ich implementierte JWT-Authentifizierung, Eingabevalidierung und sicheren API-Zugriff und integrierte Google Cloud Translation sowie Text-to-Speech für die zentralen Lernfunktionen. Claude Code, Codex und Copilot kamen in spezifikationsbasierten, agentenbasierten Workflows für Umsetzung, Tests und Code-Reviews zum Einsatz; Docker und GitHub Actions für CI/CD, Sentry für Monitoring.",
+  "outcome": "VocApp ist live und wird aktiv weiterentwickelt. Architektur und CI/CD-Pipeline ermöglichen fortlaufende Feature-Releases mit demselben KI-gestützten, spezifikationsbasierten Workflow.",
+  "coverImage": {
+    "src": "/case-study-vocapp.webp",
+    "alt": "Screenshot des VocApp-Web-Dashboards mit Vokabellisten und Lernfortschritt"
+  }
+}

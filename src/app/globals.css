@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+/* Keyframes carried over from reference/prototype/styles.css, with identical
+   names, durations, and easing (specs/prototype-analysis.md section 8). */
+@keyframes kenBurns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes introHold {
+  0%,
+  75% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes logoPop {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lineDrop {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    /* Same 56px travel as the old top:-16px -> top:40px, as a compositor-only
+       transform instead of a layout-triggering property (TEST CANDIDATE). */
+    transform: translateY(56px);
+  }
+}
+
+/* The intro overlay is server-rendered unconditionally (IntroSequence.tsx)
+   so its video/poster are discoverable at HTML-parse time for LCP purposes.
+   For a session that already played it, the blocking script in the root
+   layout sets this attribute before the overlay markup is parsed, hiding it
+   from the very first paint instead of waiting for React to correct it. */
+html[data-intro-played] #intro-sequence {
+  display: none;
+}
+
+/* Reduced motion: the underlying state change (hero content visible, nav
+   open/closed, page scrolled) is always preserved; only non-essential motion
+   is disabled (specs/prototype-analysis.md section 8, architecture section 17). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

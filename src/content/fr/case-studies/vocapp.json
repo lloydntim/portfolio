@@ -1,0 +1,29 @@
+{
+  "slug": "vocapp",
+  "order": 1,
+  "title": "VocApp",
+  "summary": "Une application d'apprentissage des langues mobile-first et pilotée par API, conçue de bout en bout pour AnzaKen, avec mémorisation ludique, traduction et synthèse vocale.",
+  "role": "Senior Product Engineer",
+  "timeline": "août 2025 – aujourd'hui",
+  "stack": [
+    "React",
+    "Next.js",
+    "Node.js",
+    "Express",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis",
+    "Authentification JWT",
+    "Google Cloud Translation & Text-to-Speech",
+    "Docker",
+    "GitHub Actions",
+    "Sentry"
+  ],
+  "challenge": "AnzaKen avait besoin d'un produit d'apprentissage des langues prêt pour la production, piloté par API et développé de bout en bout, avec une authentification sécurisée, des données validées et un déploiement fiable, tout en adoptant des pratiques d'ingénierie assistées par IA et pilotées par les spécifications pour avancer rapidement sans sacrifier la qualité.",
+  "approach": "Responsable de l'architecture produit sur l'ensemble de la stack : un frontend Next.js/React organisé par fonctionnalités et un backend Node.js/Express (TypeScript) en couches (routes, contrôleurs, services et repositories), appuyé sur PostgreSQL et Redis. Mise en place de l'authentification JWT, de la validation des entrées et d'un accès API sécurisé, avec intégration de Google Cloud Translation et des services de synthèse vocale pour les fonctionnalités d'apprentissage principales de l'application. Utilisation de Claude Code, Codex et Copilot dans des workflows agentiques pilotés par les spécifications pour l'implémentation, les tests et la revue de code, avec Docker et GitHub Actions pour le CI/CD et Sentry pour l'observabilité.",
+  "outcome": "VocApp est en ligne et en développement actif, avec une architecture et un pipeline CI/CD qui permettent de continuer à livrer des fonctionnalités selon le même workflow assisté par IA et piloté par les spécifications.",
+  "coverImage": {
+    "src": "/case-study-vocapp.webp",
+    "alt": "Capture d'écran du tableau de bord web VocApp, montrant les listes de vocabulaire et la progression de maîtrise"
+  }
+}
