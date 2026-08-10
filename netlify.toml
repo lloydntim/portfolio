@@ -1,0 +1,13 @@
+# Deployment via Netlify's automatically managed Next.js Runtime
+# (architecture ADR-004): no @netlify/plugin-nextjs install/pin, no custom
+# publish directory. Both are handled by the managed runtime itself; setting
+# either here would fight it, not configure it. pnpm is auto-detected from
+# pnpm-lock.yaml, and its version comes from package.json's "packageManager"
+# field via Corepack. This file only pins what the managed runtime leaves to
+# the project: the build command and the Node version.
+
+[build]
+  command = "pnpm build"
+
+[build.environment]
+  NODE_VERSION = "24"
