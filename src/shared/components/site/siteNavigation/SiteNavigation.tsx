@@ -16,9 +16,13 @@ export type SiteNavigationProps = {
   logoSrc: string;
   logoAlt: string;
   links: SiteNavigationLink[];
-  /** The homepage keeps the nav absolutely positioned over the hero until
-   * the user scrolls; other pages (case studies) render it in its sticky
-   * form from the start (specs/prototype-analysis.md decision 8). */
+  /** Pass this on any page that opens with a dark section the nav can start
+   * transparent over (the homepage hero, a case study's opening block). The
+   * nav switches to its sticky, solid form once the user scrolls past that
+   * section, and back when they return to the top (specs/prototype-analysis.md
+   * decision 8, which approves this behaviour for the nav generally, not
+   * just the homepage). Omit it on pages without such a section, where the
+   * nav should just start sticky. */
   startsOverHero?: boolean;
 };
 

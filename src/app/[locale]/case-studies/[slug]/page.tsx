@@ -58,6 +58,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         logoSrc="/logos/logo.svg"
         logoAlt={content.nav.logoAlt}
         links={caseStudyNavLinksByLocale[activeLocale]}
+        startsOverHero
       />
       <main>
         <CaseStudyArticle slug={slug} locale={activeLocale} />
