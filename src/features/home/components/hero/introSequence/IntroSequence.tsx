@@ -4,7 +4,10 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 const SESSION_KEY = 'introPlayed';
-const HOLD_MS = 3600;
+// Matches the introHold keyframe's total duration below: holds at full
+// opacity 0.5s longer than before (to 78%, ~3.2s) before its ~0.9s fade-out,
+// so the logo doesn't disappear as soon as it finishes popping in.
+const HOLD_MS = 4100;
 
 // `fetchPriority` on <video> is valid per the HTML living standard and is
 // what Lighthouse's LCP-discovery audit checks for on this element, but
@@ -66,7 +69,7 @@ export function IntroSequence({ webmSrc, mp4Src, posterSrc }: IntroSequenceProps
   return (
     <div
       id="intro-sequence"
-      className="absolute inset-0 z-30 flex items-center justify-center bg-black [animation:introHold_3.6s_ease_forwards]"
+      className="absolute inset-0 z-30 flex items-center justify-center bg-black [animation:introHold_4.1s_ease_forwards]"
     >
       <video
         autoPlay
