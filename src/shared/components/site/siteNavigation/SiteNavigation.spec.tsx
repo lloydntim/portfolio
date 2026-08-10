@@ -1,7 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('next/navigation', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('next/navigation')>();
+  return {
+    ...actual,
+    usePathname: () => '/',
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+    useParams: () => ({}),
+  };
+});
+
 import { SiteNavigation } from './SiteNavigation';
 
 const links = [

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { useStickyNavigation } from '@/shared/hooks/useStickyNavigation';
+import { LanguageSwitcher } from '@/shared/components/site/languageSwitcher/LanguageSwitcher';
 import styles from './SiteNavigation.module.css';
 
 export type SiteNavigationLink = {
@@ -83,7 +84,7 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
               open ? 'max-h-130' : 'max-h-0'
             }`}
           >
-            <div className="flex flex-col items-center gap-3 bg-bg-dark-panel px-8 pb-8 pt-4 text-center text-2xl font-medium text-[#c7c5c2] md:flex-row md:items-center md:gap-7.5 md:bg-transparent md:p-0 md:text-[14.5px]">
+            <div className="flex flex-col items-center gap-3 bg-bg-dark-panel px-8 pb-4 pt-4 text-center text-2xl font-medium text-[#c7c5c2] md:flex-row md:items-center md:gap-7.5 md:bg-transparent md:p-0 md:pb-0 md:text-[14.5px]">
               {links.map((link) => (
                 <Link
                   key={link.href}
@@ -94,6 +95,12 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
                   {link.label}
                 </Link>
               ))}
+              <div className="hidden text-[#c7c5c2] hover:text-white md:block">
+                <LanguageSwitcher variant="dropdown" />
+              </div>
+            </div>
+            <div className="bg-bg-dark-panel px-8 pb-8 text-[#c7c5c2] md:hidden">
+              <LanguageSwitcher variant="inline" onNavigate={() => setOpen(false)} />
             </div>
           </div>
         </div>
