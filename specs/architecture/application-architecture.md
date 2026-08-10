@@ -62,7 +62,7 @@ The two decisions below were approved directly by Lloyd. They are recorded in fu
 Folders are created only when they contain real code. The blueprint below shows representative example paths, not a directory listing to be generated speculatively.
 
 ```text
-portfolio-v2/
+portfolio/
 ├── src/
 │   ├── app/
 │   │   ├── [locale]/
