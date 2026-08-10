@@ -1,0 +1,21 @@
+<!doctype html>
+<!--
+  Netlify Forms build-time detection scans static HTML, not client-rendered
+  React output. @netlify/plugin-nextjs v5 (the OpenNext-based Next.js Runtime)
+  cannot see the real ContactForm markup (a 'use client' component), so this
+  file exists solely to register the form's shape with Netlify at build time.
+  It is never served to visitors. See ADR-007 (specs/architecture/application-architecture.md)
+  and https://opennext.js.org/netlify/forms.
+-->
+<html>
+  <head></head>
+  <body>
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="name" type="text" />
+      <input name="email" type="email" />
+      <textarea name="message"></textarea>
+      <input name="bot-field" />
+    </form>
+  </body>
+</html>
