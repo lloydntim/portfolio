@@ -48,6 +48,7 @@ export function LanguageSwitcher({ variant, onNavigate }: LanguageSwitcherProps)
             key={locale}
             href={pathname}
             locale={locale}
+            scroll={false}
             onClick={onNavigate}
             aria-current={locale === activeLocale ? 'true' : undefined}
             className={`${styles.option} ${locale === activeLocale ? `${styles.optionActive} text-text-on-dark` : 'text-body-dark-muted'}`}
@@ -96,6 +97,7 @@ export function LanguageSwitcher({ variant, onNavigate }: LanguageSwitcherProps)
               role="menuitem"
               href={pathname}
               locale={locale}
+              scroll={false}
               onClick={() => setOpen(false)}
               aria-current={locale === activeLocale ? 'true' : undefined}
               className={`${styles.option} mx-4 ${locale === activeLocale ? `${styles.optionActive} text-text-on-dark` : 'text-body-dark-muted'}`}

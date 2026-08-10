@@ -14,7 +14,7 @@ export async function CaseStudyCard({ slug, locale, linkLabel }: CaseStudyCardPr
 
   return (
     <div className="grid grid-cols-1 gap-4 border border-black/[0.08] bg-white p-5 md:grid-cols-[200px_1fr] md:items-center md:gap-6 lg:grid-cols-[280px_1fr_auto] lg:gap-8 lg:p-6">
-      <div className="relative h-[130px] bg-[#efece6] md:h-[150px]">
+      <Link href={`/case-studies/${caseStudy.slug}`} className="relative block h-[130px] bg-[#efece6] md:h-[150px]">
         <Image
           src={caseStudy.coverImage.src}
           alt={caseStudy.coverImage.alt}
@@ -22,7 +22,7 @@ export async function CaseStudyCard({ slug, locale, linkLabel }: CaseStudyCardPr
           sizes="(min-width: 1024px) 280px, (min-width: 768px) 200px, 100vw"
           className="object-cover"
         />
-      </div>
+      </Link>
       <div>
         <h3 className="mb-2.5 font-heading text-[22px] font-semibold text-text-on-light">{caseStudy.title}</h3>
         <p className="text-[15px] leading-[1.65] text-body-light-muted">{caseStudy.summary}</p>
