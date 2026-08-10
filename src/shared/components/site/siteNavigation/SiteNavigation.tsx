@@ -1,11 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { useStickyNavigation } from '@/shared/hooks/useStickyNavigation';
+import { useActiveSection } from '@/shared/hooks/useActiveSection';
 import { LanguageSwitcher } from '@/shared/components/site/languageSwitcher/LanguageSwitcher';
 import styles from './SiteNavigation.module.css';
+
+function sectionIdOf(href: string): string | undefined {
+  return href.split('#')[1] || undefined;
+}
 
 export type SiteNavigationLink = {
   label: string;
@@ -30,6 +35,10 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
   const [open, setOpen] = useState(false);
   const isPastHero = useStickyNavigation();
   const isSticky = !startsOverHero || isPastHero;
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+  const sectionIds = useMemo(() => links.map((link) => sectionIdOf(link.href)).filter((id): id is string => Boolean(id)), [links]);
+  const activeSectionId = useActiveSection(sectionIds);
   // While the mobile menu is open, the bar and the panel below it are both
   // solid (same colour), and everything else still visible on screen is
   // blurred instead, rather than the panel itself being translucent.
@@ -89,16 +98,21 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
             }`}
           >
             <div className="flex flex-col items-center gap-3 bg-bg-dark-panel px-8 pb-4 pt-4 text-center text-2xl font-medium text-[#c7c5c2] md:flex-row md:items-center md:gap-7.5 md:bg-transparent md:p-0 md:pb-0 md:text-[17.4px]">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className={`${styles.navLink} py-3 text-inherit hover:text-white md:py-0`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {links.map((link) => {
+                const hash = sectionIdOf(link.href);
+                const isActive = hash ? hash === activeSectionId : isHomePage && activeSectionId === null;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`${styles.navLink} py-3 text-inherit hover:text-white aria-[current=page]:text-white md:py-0`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
               <div className="hidden text-[#c7c5c2] hover:text-white md:ml-3.75 md:block">
                 <LanguageSwitcher variant="dropdown" />
               </div>
