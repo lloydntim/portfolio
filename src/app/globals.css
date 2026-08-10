@@ -23,7 +23,7 @@
 
 @keyframes introHold {
   0%,
-  75% {
+  78% {
     opacity: 1;
     visibility: visible;
   }
