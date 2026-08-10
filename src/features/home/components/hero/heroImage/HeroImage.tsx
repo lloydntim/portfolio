@@ -61,7 +61,7 @@ export function HeroImage({ titleAccent, titleRest, subtitle }: HeroImageProps) 
           aria-hidden="true"
           className="absolute left-1/2 top-1/2 z-0 h-[220%] w-[150%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_60%_65%_at_50%_50%,rgba(0,0,0,.55),transparent_72%)]"
         />
-        <h1 className="relative mb-3.5 min-h-[2.1em] font-heading text-[2.35rem] font-bold leading-[1.05] tracking-[-0.02em] text-white opacity-0 [animation:fadeUp_.9s_ease_3.7s_forwards] [text-shadow:0_4px_20px_rgba(0,0,0,.65)] xs:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:min-h-[1.05em] xl:text-[5.15625rem]">
+        <h1 className="relative mb-3.5 min-h-[2.1em] font-heading text-[2.35rem] font-bold leading-[1.05] tracking-[-0.02em] text-white opacity-0 [animation:fadeUp_.9s_ease_3.7s_forwards] [text-shadow:0_4px_20px_rgba(0,0,0,.65)] xs:min-h-[1.05em] xs:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:text-[5.15625rem]">
           <span className="text-accent-mid">{titleAccent}</span> {titleRest}
         </h1>
         <p className="relative mx-auto max-w-[480px] text-[15px] leading-[1.6] text-[#f0efec] opacity-0 [animation:fadeUp_.9s_ease_3.9s_forwards] [text-shadow:0_2px_12px_rgba(0,0,0,.6)] md:max-w-[520px] md:text-[17px] lg:text-[18px]">

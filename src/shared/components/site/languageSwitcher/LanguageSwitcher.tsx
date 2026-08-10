@@ -66,7 +66,7 @@ export function LanguageSwitcher({ variant, onNavigate }: LanguageSwitcherProps)
         aria-haspopup="true"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-1 font-label text-inherit"
+        className="flex items-center gap-1 pb-1 font-label text-inherit"
       >
         {activeLocale.toUpperCase()}
         <svg
@@ -88,7 +88,7 @@ export function LanguageSwitcher({ variant, onNavigate }: LanguageSwitcherProps)
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-3 flex min-w-22 flex-col gap-2 bg-bg-dark-panel-alt py-2.5 font-label text-sm font-bold tracking-wide"
+          className="absolute right-0 top-full mt-3 flex min-w-22 flex-col gap-2 border border-white/15 bg-black/75 py-2.5 font-label text-[16.8px] font-bold tracking-wide"
         >
           {publishedLocales.map((locale) => (
             <Link

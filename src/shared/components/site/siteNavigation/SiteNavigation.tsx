@@ -16,9 +16,13 @@ export type SiteNavigationProps = {
   logoSrc: string;
   logoAlt: string;
   links: SiteNavigationLink[];
-  /** The homepage keeps the nav absolutely positioned over the hero until
-   * the user scrolls; other pages (case studies) render it in its sticky
-   * form from the start (specs/prototype-analysis.md decision 8). */
+  /** Pass this on any page that opens with a dark section the nav can start
+   * transparent over (the homepage hero, a case study's opening block). The
+   * nav switches to its sticky, solid form once the user scrolls past that
+   * section, and back when they return to the top (specs/prototype-analysis.md
+   * decision 8, which approves this behaviour for the nav generally, not
+   * just the homepage). Omit it on pages without such a section, where the
+   * nav should just start sticky. */
   startsOverHero?: boolean;
 };
 
@@ -84,7 +88,7 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
               open ? 'max-h-130' : 'max-h-0'
             }`}
           >
-            <div className="flex flex-col items-center gap-3 bg-bg-dark-panel px-8 pb-4 pt-4 text-center text-2xl font-medium text-[#c7c5c2] md:flex-row md:items-center md:gap-7.5 md:bg-transparent md:p-0 md:pb-0 md:text-[14.5px]">
+            <div className="flex flex-col items-center gap-3 bg-bg-dark-panel px-8 pb-4 pt-4 text-center text-2xl font-medium text-[#c7c5c2] md:flex-row md:items-center md:gap-7.5 md:bg-transparent md:p-0 md:pb-0 md:text-[17.4px]">
               {links.map((link) => (
                 <Link
                   key={link.href}
@@ -95,7 +99,7 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
                   {link.label}
                 </Link>
               ))}
-              <div className="hidden text-[#c7c5c2] hover:text-white md:block">
+              <div className="hidden text-[#c7c5c2] hover:text-white md:ml-3.75 md:block">
                 <LanguageSwitcher variant="dropdown" />
               </div>
             </div>
