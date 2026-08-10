@@ -56,20 +56,20 @@ export function HeroImage({ titleAccent, titleRest, subtitle }: HeroImageProps) 
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,6,7,.58)_0%,rgba(6,6,7,.42)_40%,rgba(6,6,7,.3)_70%,rgba(6,6,7,.48)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_70%_at_50%_55%,transparent_30%,rgba(6,6,7,.38)_100%)]" />
 
-      <div className="relative z-[1] mx-auto max-w-[900px]">
+      <div className="relative top-20 z-[1] mx-auto max-w-[900px]">
         <div
           aria-hidden="true"
           className="absolute left-1/2 top-1/2 z-0 h-[220%] w-[150%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_60%_65%_at_50%_50%,rgba(0,0,0,.55),transparent_72%)]"
         />
-        <h1 className="relative mb-3.5 min-h-[2.1em] font-heading text-[2.35rem] font-bold leading-[1.05] tracking-[-0.02em] text-white opacity-0 [animation:fadeUp_.9s_ease_3.7s_forwards] [text-shadow:0_4px_20px_rgba(0,0,0,.65)] xs:min-h-[1.05em] xs:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:text-[5.15625rem]">
+        <h1 className="hero-fade relative mb-3.5 min-h-[2.1em] font-heading text-[2.35rem] font-bold leading-[1.05] tracking-[-0.02em] text-white opacity-0 [animation:fadeUp_.9s_ease_3.7s_forwards] [text-shadow:0_4px_20px_rgba(0,0,0,.65)] xs:min-h-[1.05em] xs:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:text-[5.15625rem]">
           <span className="text-accent-mid">{titleAccent}</span> {titleRest}
         </h1>
-        <p className="relative mx-auto max-w-[480px] text-[15px] leading-[1.6] text-[#f0efec] opacity-0 [animation:fadeUp_.9s_ease_3.9s_forwards] [text-shadow:0_2px_12px_rgba(0,0,0,.6)] md:max-w-[520px] md:text-[17px] lg:text-[18px]">
+        <p className="hero-fade relative mx-auto max-w-[480px] text-[15px] leading-[1.6] text-[#f0efec] opacity-0 [animation:fadeUp_.9s_ease_3.9s_forwards] [text-shadow:0_2px_12px_rgba(0,0,0,.6)] md:max-w-[520px] md:text-[17px] lg:text-[18px]">
           {subtitle}
         </p>
       </div>
 
-      <div className="relative z-[2] flex flex-col items-center gap-2 opacity-0 [animation:fadeUp_.8s_ease_4.1s_forwards]">
+      <div className="hero-fade relative top-20 z-[2] flex flex-col items-center gap-2 opacity-0 [animation:fadeUp_.8s_ease_4.1s_forwards]">
         <span className="font-label text-[10px] font-medium tracking-[2px] text-white/65">SCROLL</span>
         <div className="relative h-10 w-[1.5px] overflow-hidden bg-white/25">
           <div className="absolute left-0 top-[-16px] h-4 w-full bg-accent [animation:lineDrop_1.8s_ease-in-out_infinite]" />

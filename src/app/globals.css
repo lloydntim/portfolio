@@ -75,6 +75,16 @@ html[data-intro-played] #intro-sequence {
   display: none;
 }
 
+/* The hero text's fadeUp delays (3.7s-4.1s) exist to wait out the intro
+   overlay's screen time. For a returning visitor the overlay above is
+   already hidden, so there is nothing left to wait for: show the hero
+   text immediately instead of replaying the same multi-second delay. */
+html[data-intro-played] .hero-fade {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
 /* Reduced motion: the underlying state change (hero content visible, nav
    open/closed, page scrolled) is always preserved; only non-essential motion
    is disabled (specs/prototype-analysis.md section 8, architecture section 17). */
