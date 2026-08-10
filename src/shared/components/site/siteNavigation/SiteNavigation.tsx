@@ -65,12 +65,14 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
               mismatch warning that a single fixed height + `w-auto` class
               triggers; the wrapper's width is derived from its height via
               aspect-ratio instead. */}
-          <span
+          <Link
+            href="/"
+            aria-label="Home"
             className={`relative inline-block ${isSticky ? 'h-3.25 md:h-5' : 'h-3.75 md:h-5.5'}`}
             style={{ aspectRatio: '96 / 20' }}
           >
             <Image src={logoSrc} alt={logoAlt} fill sizes="120px" className="object-contain object-left" preload />
-          </span>
+          </Link>
 
           <button
             type="button"
