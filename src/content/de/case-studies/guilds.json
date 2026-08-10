@@ -1,0 +1,26 @@
+{
+  "slug": "guilds",
+  "order": 3,
+  "title": "Guilds",
+  "summary": "Eine mobile Gaming-Krypto-Wallet, entwickelt im kleinen Gründerteam mit React Native, einer begleitenden React-Native-Web-App und einem Python/FastAPI-Backend.",
+  "role": "Product Engineer",
+  "timeline": "Mär. 2022 – Okt. 2022",
+  "stack": [
+    "React Native",
+    "TypeScript",
+    "SwiftUI",
+    "Python",
+    "FastAPI",
+    "REST APIs",
+    "PostgreSQL",
+    "SQL",
+    "pgAdmin"
+  ],
+  "challenge": "Als Teil eines kleinen Gründerteams entwickelte ich für Guilds eine mobile Gaming-Krypto-Wallet als native App und begleitende Web-App auf gemeinsamer Codebasis. Zuverlässige APIs und Daten sowie die enge Abstimmung mit CTO, Backend-Engineer und Designer hielten Produkt- und Technikentscheidungen auf Kurs.",
+  "approach": "Ich entwickelte eine wiederverwendbare React-Native-Komponentenbibliothek für die mobile App und die begleitende React-Native-Web-App. Styled Components sorgten plattformübergreifend für ein einheitliches Erscheinungsbild. Außerdem entwickelte und pflegte ich Python/FastAPI-REST-Services für CRUD-Abläufe und Drittanbieter-Integrationen. Mit PostgreSQL, SQL und pgAdmin prüfte ich Anwendungszustände und behob API- und Datenprobleme in mobilen Clients und Backend.",
+  "outcome": "Ich lieferte Features für Mobile, Web und Backend – von der frühen Entwicklung über Praxistests mit Kunden bis zum ersten Produkt-Launch.",
+  "coverImage": {
+    "src": "/case-study-guilds.webp",
+    "alt": "Screenshots der Guilds-Mobile-App mit Onboarding-, Wallet- und Rewards-Ansicht"
+  }
+}

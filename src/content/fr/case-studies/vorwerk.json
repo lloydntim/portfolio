@@ -1,0 +1,27 @@
+{
+  "slug": "vorwerk",
+  "order": 2,
+  "title": "Vorwerk",
+  "summary": "Une nouvelle architecture frontend pour vorwerk.com, combinant le rendu React côté serveur dans AEM à un déploiement serverless sur AWS Lambda.",
+  "role": "Architecte front",
+  "timeline": "juil. 2024 – juin 2025",
+  "stack": [
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Java",
+    "AEM",
+    "Vite SSR",
+    "AWS Lambda",
+    "GitLab CI/CD",
+    "Lighthouse",
+    "Pa11y"
+  ],
+  "challenge": "Le site international vorwerk.com devait proposer une expérience React de type SPA sans perdre l'édition WYSIWYG indispensable aux éditeurs CMS. La base Java/AEM existante, avec ses modèles et servlets, devait continuer à garantir un rendu serveur et client cohérent.",
+  "approach": "J'ai conçu et mis en œuvre une base de rendu React côté serveur avec Vite pour AEM. L'intégration aux servlets Java a préservé l'édition WYSIWYG tout en permettant une expérience de type SPA. Après analyse des modèles Java, des servlets et des échanges JSON existants, j'ai assuré la cohérence des rendus client et serveur. Avec les architectes solution et techniques, j'ai automatisé via GitLab CI/CD le déploiement du build React SSR sur AWS Lambda dans l'architecture d'hébergement serverless. Enfin, Lighthouse et Pa11y m'ont permis d'améliorer les composants selon les directives internes WCAG 2.2.",
+  "outcome": "La nouvelle architecture constitue le socle du site vorwerk.com en production. Elle atteint des scores Lighthouse de 85 à 90+ tout en préservant une édition WYSIWYG fluide pour les éditeurs CMS.",
+  "coverImage": {
+    "src": "/case-study-vorwerk.webp",
+    "alt": "Capture d'écran de la page d'accueil vorwerk.com, montrant un produit en vedette et une bannière promotionnelle"
+  }
+}

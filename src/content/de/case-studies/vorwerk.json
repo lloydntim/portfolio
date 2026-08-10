@@ -1,0 +1,27 @@
+{
+  "slug": "vorwerk",
+  "order": 2,
+  "title": "Vorwerk",
+  "summary": "Neue Frontend-Architektur für vorwerk.com: React Server-Side Rendering in AEM, serverlos auf AWS Lambda bereitgestellt.",
+  "role": "Frontend-Architekt",
+  "timeline": "Jul. 2024 – Jun. 2025",
+  "stack": [
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Java",
+    "AEM",
+    "Vite SSR",
+    "AWS Lambda",
+    "GitLab CI/CD",
+    "Lighthouse",
+    "Pa11y"
+  ],
+  "challenge": "Die internationale Website vorwerk.com brauchte eine React-Auslieferung im SPA-Stil, ohne das für CMS-Redakteure wichtige WYSIWYG-Authoring zu verlieren. Eine bestehende Java/AEM-Codebasis mit Modellen und Servlets musste dabei weiterhin konsistentes Server- und Client-Rendering gewährleisten.",
+  "approach": "Ich konzipierte und implementierte eine Vite-basierte Grundlage für React Server-Side Rendering in AEM. Die Integration mit Java-Servlets erhielt das WYSIWYG-Authoring und ermöglichte gleichzeitig die Auslieferung im SPA-Stil. Nach der Analyse bestehender Java-Modelle, Servlets und des JSON-Datenaustauschs stellte ich konsistentes Client- und Server-Rendering sicher. Gemeinsam mit Lösungs- und Technikarchitekten automatisierte ich das GitLab-CI/CD-Deployment des React-SSR-Builds auf AWS Lambda als Teil der serverlosen Hosting-Architektur. Mit Lighthouse und Pa11y verbesserte ich die Komponentenqualität nach internen WCAG-2.2-Richtlinien.",
+  "outcome": "Die neue Architektur bildet das Fundament von vorwerk.com. Sie erzielt Lighthouse-Werte von 85–90+ und bewahrt zugleich das nahtlose WYSIWYG-Authoring für CMS-Redakteure.",
+  "coverImage": {
+    "src": "/case-study-vorwerk.webp",
+    "alt": "Screenshot der vorwerk.com-Startseite mit einem Produkt-Feature und Werbebanner"
+  }
+}

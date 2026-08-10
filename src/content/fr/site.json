@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "logoAlt": "Lloyd Ntim",
+    "links": [
+      { "label": "Accueil", "href": "#" },
+      { "label": "À propos", "href": "#about" },
+      { "label": "Services", "href": "#services" },
+      { "label": "Projets", "href": "#projects" },
+      { "label": "Contact", "href": "#contact" }
+    ]
+  },
+  "hero": {
+    "titleAccent": "Product",
+    "titleRest": "Engineer",
+    "subtitle": "Des logiciels utiles et évolutifs, de l'idée à la production."
+  },
+  "about": {
+    "eyebrow": "À PROPOS DE MOI",
+    "heading": "Ingénieur full-stack orienté produit",
+    "bio": "Je conçois et fais évoluer des produits numériques pour de grands groupes et des marques grand public comme E.ON, Kia, Deutsche Bank, Sony et Vorwerk, en associant une expertise pointue en React/Next.js à une solide maîtrise du backend et des systèmes.",
+    "cvLabel": "Télécharger le CV (anglais)",
+    "cvHref": "/cv/lloyd-ntim-cv-en.pdf",
+    "portraitAlt": "Lloyd Ntim",
+    "checklist": [
+      "Plus de 15 ans d'expérience",
+      "Vision produit et systémique",
+      "Responsabilité de bout en bout",
+      "Code pragmatique et maintenable"
+    ]
+  },
+  "expertise": {
+    "eyebrow": "EXPERTISE",
+    "cards": [
+      {
+        "title": "Product Engineering",
+        "description": "Développement produit de bout en bout avec React, Next.js et des design systems, de la stratégie à l'architecture puis au frontend soigné."
+      },
+      {
+        "title": "Spec-Driven Development",
+        "description": "Claude Code, Codex et des workflows d'agents pour concrétiser des spécifications claires et des intégrations LLM."
+      },
+      {
+        "title": "Backend & APIs",
+        "description": "Node.js, Python, REST/GraphQL, authentification et modélisation des données."
+      },
+      {
+        "title": "Data & Cloud",
+        "description": "PostgreSQL, MongoDB, Redis, AWS, Docker et une infrastructure robuste."
+      }
+    ]
+  },
+  "whatIDeliver": {
+    "eyebrow": "MES SERVICES",
+    "intro": "De l'idée produit aux plateformes complexes déjà en place, j'aide les équipes à transformer leurs défis techniques en logiciels bien conçus et prêts pour la production.",
+    "rows": [
+      {
+        "number": "01",
+        "label": "BUILD",
+        "title": "Ingénierie produit de bout en bout",
+        "description": "De l'idée à la production — architecture, UX, frontend et backend — je prends en charge tout le cycle, des premières exigences au logiciel livré."
+      },
+      {
+        "number": "02",
+        "label": "AMÉLIORER",
+        "title": "Modernisation produit & architecture",
+        "description": "Identifier les problèmes d'architecture, de performance et d'UX dans les plateformes existantes, et transformer ces constats en améliorations techniques concrètes."
+      },
+      {
+        "number": "03",
+        "label": "ACCÉLÉRER",
+        "title": "Produits IA & prototypage rapide",
+        "description": "Fonctionnalités basées sur l'IA, intégrations LLM, systèmes de recherche documentaire et prototypes rapides pour valider les idées avant d'investir dans des projets plus ambitieux."
+      },
+      {
+        "number": "04",
+        "label": "TRANSFORMER",
+        "title": "Ingénierie au sein des équipes",
+        "description": "Je collabore directement avec les équipes produit, design et métier, au sein d'une équipe ou en pilotant une initiative définie de bout en bout."
+      }
+    ]
+  },
+  "projects": {
+    "eyebrow": "PROJETS PHARES",
+    "heading": "Projets",
+    "linkLabel": "Étude de cas →"
+  },
+  "contact": {
+    "eyebrow": "CONTACT",
+    "heading": "Construisons quelque chose ensemble.",
+    "availability": "Actuellement disponible à temps plein, en CDI ou en freelance.",
+    "location": "Basé entre la région DACH et le Royaume-Uni, je travaille dans les deux et à distance.",
+    "email": "info@lloydntim.com",
+    "ukPhone": "+44 7908 520696",
+    "dePhone": "+49 176 65708605",
+    "form": {
+      "nameLabel": "Votre nom",
+      "emailLabel": "E-mail",
+      "messageLabel": "Message",
+      "submitLabel": "Envoyer le message",
+      "submittingLabel": "Envoi en cours…",
+      "successMessage": "Merci, votre message a bien été envoyé. Je vous répondrai rapidement.",
+      "validationErrorMessage": "Veuillez vérifier les champs surlignés et réessayer.",
+      "submissionFailureMessage": "Une erreur est survenue lors de l'envoi. Veuillez réessayer ou m'écrire directement à l'adresse ci-dessous.",
+      "honeypotLabel": "Laissez ce champ vide"
+    }
+  },
+  "trustedBy": {
+    "heading": "ILS ME FONT CONFIANCE",
+    "logos": [
+      { "name": "E.ON", "slug": "eon", "variant": "pair" },
+      { "name": "Kia", "slug": "kia", "variant": "pair" },
+      { "name": "Deutsche Bank", "slug": "deutschebank", "variant": "pair" },
+      { "name": "Sony", "slug": "sony", "variant": "pair" },
+      { "name": "Vorwerk", "slug": "vorwerk", "variant": "pair" },
+      { "name": "Skyscanner", "slug": "skyscanner", "variant": "pair" },
+      { "name": "Harrods", "slug": "harrods", "variant": "pair" },
+      { "name": "AKQA", "slug": "akqa", "variant": "solo" },
+      { "name": "AOE", "slug": "aoe", "variant": "pair" },
+      { "name": "Heycar", "slug": "heycar", "variant": "pair" },
+      { "name": "Native Instruments", "slug": "nativeinstruments", "variant": "solo", "soloFile": "logo-nativeinstruments-bw.svg" },
+      { "name": "Ryanair", "slug": "ryanair", "variant": "pair" },
+      { "name": "Waitrose", "slug": "waitrose", "variant": "pair" }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2026 Lloyd Ntim",
+    "githubHref": "https://github.com/lloydntim",
+    "linkedinHref": "https://www.linkedin.com/in/lloydntim",
+    "email": "info@lloydntim.com"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "logoAlt": "Lloyd Ntim",
+    "links": [
+      { "label": "Home", "href": "#" },
+      { "label": "About", "href": "#about" },
+      { "label": "Services", "href": "#services" },
+      { "label": "Projects", "href": "#projects" },
+      { "label": "Contact", "href": "#contact" }
+    ]
+  },
+  "hero": {
+    "titleAccent": "Product",
+    "titleRest": "Engineer",
+    "subtitle": "Building useful, scalable software from concept to production."
+  },
+  "about": {
+    "eyebrow": "ABOUT ME",
+    "heading": "Full-stack engineer with a product mindset",
+    "bio": "I build and scale digital products for enterprise and consumer brands including E.ON, Kia, Deutsche Bank, Sony and Vorwerk, pairing deep React/Next.js expertise with robust backend and system design.",
+    "cvLabel": "Download CV (English)",
+    "cvHref": "/cv/lloyd-ntim-cv-en.pdf",
+    "portraitAlt": "Lloyd Ntim",
+    "checklist": [
+      "15+ years experience",
+      "Product & system thinking",
+      "End-to-end ownership",
+      "Pragmatic, maintainable code"
+    ]
+  },
+  "expertise": {
+    "eyebrow": "EXPERTISE",
+    "cards": [
+      {
+        "title": "Product Engineering",
+        "description": "End-to-end product delivery with React, Next.js and design systems, from strategy and architecture to a polished frontend."
+      },
+      {
+        "title": "Spec-Driven Development",
+        "description": "Claude Code, Codex and agentic workflows for shipping from clear specs and LLM integrations."
+      },
+      {
+        "title": "Backend & APIs",
+        "description": "Node.js, Python, REST/GraphQL, authentication and data modelling."
+      },
+      {
+        "title": "Data & Cloud",
+        "description": "PostgreSQL, MongoDB, Redis, AWS, Docker and resilient infrastructure."
+      }
+    ]
+  },
+  "whatIDeliver": {
+    "eyebrow": "WHAT I DELIVER",
+    "intro": "From early product ideas to complex existing platforms, I help teams turn technical challenges into well-designed, production-ready software.",
+    "rows": [
+      {
+        "number": "01",
+        "label": "BUILD",
+        "title": "End-to-end product engineering",
+        "description": "Idea, architecture, UX, frontend, backend and production, owning the full delivery lifecycle from first requirements to shipped software."
+      },
+      {
+        "number": "02",
+        "label": "IMPROVE",
+        "title": "Product modernisation & architecture",
+        "description": "Identifying architectural, performance and UX issues in existing platforms, and turning those findings into practical engineering improvements."
+      },
+      {
+        "number": "03",
+        "label": "ACCELERATE",
+        "title": "AI products & rapid prototyping",
+        "description": "AI-powered features, LLM integrations and retrieval systems, plus fast working prototypes that let teams validate ideas before committing to larger builds."
+      },
+      {
+        "number": "04",
+        "label": "TRANSFORM",
+        "title": "Embedded engineering & collaboration",
+        "description": "Working directly alongside product, design and business stakeholders, embedded in a team or owning a defined initiative end to end."
+      }
+    ]
+  },
+  "projects": {
+    "eyebrow": "FEATURED WORK",
+    "heading": "Projects",
+    "linkLabel": "Case study →"
+  },
+  "contact": {
+    "eyebrow": "CONTACT",
+    "heading": "Let's build something.",
+    "availability": "Currently available full-time for permanent or freelance work.",
+    "location": "Based across the DACH region & UK, commuting between the two, and available remotely.",
+    "email": "info@lloydntim.com",
+    "ukPhone": "+44 7908 520696",
+    "dePhone": "+49 176 65708605",
+    "form": {
+      "nameLabel": "Your name",
+      "emailLabel": "Email",
+      "messageLabel": "Message",
+      "submitLabel": "Send message",
+      "submittingLabel": "Sending…",
+      "successMessage": "Thanks, your message has been sent. I'll get back to you soon.",
+      "validationErrorMessage": "Please check the highlighted fields and try again.",
+      "submissionFailureMessage": "Something went wrong sending your message. Please try again, or email me directly below.",
+      "honeypotLabel": "Leave this field empty"
+    }
+  },
+  "trustedBy": {
+    "heading": "TRUSTED BY TEAMS AT",
+    "logos": [
+      { "name": "E.ON", "slug": "eon", "variant": "pair" },
+      { "name": "Kia", "slug": "kia", "variant": "pair" },
+      { "name": "Deutsche Bank", "slug": "deutschebank", "variant": "pair" },
+      { "name": "Sony", "slug": "sony", "variant": "pair" },
+      { "name": "Vorwerk", "slug": "vorwerk", "variant": "pair" },
+      { "name": "Skyscanner", "slug": "skyscanner", "variant": "pair" },
+      { "name": "Harrods", "slug": "harrods", "variant": "pair" },
+      { "name": "AKQA", "slug": "akqa", "variant": "solo" },
+      { "name": "AOE", "slug": "aoe", "variant": "pair" },
+      { "name": "Heycar", "slug": "heycar", "variant": "pair" },
+      { "name": "Native Instruments", "slug": "nativeinstruments", "variant": "solo", "soloFile": "logo-nativeinstruments-bw.svg" },
+      { "name": "Ryanair", "slug": "ryanair", "variant": "pair" },
+      { "name": "Waitrose", "slug": "waitrose", "variant": "pair" }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2026 Lloyd Ntim",
+    "githubHref": "https://github.com/lloydntim",
+    "linkedinHref": "https://www.linkedin.com/in/lloydntim",
+    "email": "info@lloydntim.com"
+  }
+}

@@ -1,10 +1,10 @@
 # Application Architecture
 
-**Status:** Approved (v1.0)
-**Scope:** The Next.js application architecture for the portfolio's first release. Documentation only. No application code, dependencies, or deployment configuration exist yet.
+**Status:** Approved (v1.3)
+**Scope:** The Next.js application architecture for the portfolio's first release. As of ADR-009/ADR-010 (2026-08-10), a working `src/` scaffold with installed dependencies already exists, ahead of this document's original assumption; this document remains the source of truth for its structure.
 **Inputs:** `AGENTS.md`, `CLAUDE.md`, `specs/workflows/agentic-engineering-workflow.md`, `specs/prototype-analysis.md`.
 
-This document does not scaffold Next.js, install dependencies, modify `reference/prototype/`, create application components, change public content, or configure deployment. All eight architecture decisions in section 21 are approved (section 2 records the two decided directly by Lloyd; section 20 explains the reasoning behind all eight). The independent Codex review's findings have been corrected (locale publication strategy, not-found explanation, preview-deployment wording, and the glossary), and this document is now approved as the architecture for scaffolding. No architecture decision blocks scaffolding; section 22 lists the later implementation and content gates that remain, none of which require restructuring anything documented here.
+This document does not modify `reference/prototype/`, change public content, or configure deployment. All eleven architecture decisions in section 21 are approved (section 2 records the two decided directly by Lloyd; section 20 explains the reasoning behind the first eight; ADR-009, ADR-010, and ADR-011 record folder-naming and grouping corrections Lloyd requested directly on 2026-08-10, migrated into the existing `src/` scaffold and verified). The independent Codex review's findings have been corrected (locale publication strategy, not-found explanation, preview-deployment wording, and the glossary), and this document is now approved as the architecture for scaffolding. No architecture decision blocks scaffolding; section 22 lists the later implementation and content gates that remain, none of which require further restructuring beyond ADR-009/ADR-010/ADR-011's corrections.
 
 ---
 
@@ -38,7 +38,7 @@ The two decisions below were approved directly by Lloyd. They are recorded in fu
 
 - A Next.js Server Action alone does not deliver or store a message. A Server Action can run server-side code, but without a destination it does nothing with the submitted data.
 - Netlify Forms will receive and store version 1 submissions. Netlify's build system detects a form in the static HTML output (a `data-netlify="true"` attribute plus a hidden `form-name` input matching the form's `name`) and stores submissions server-side without any application-hosted database.
-- The application exposes contact submission through its own clearly named abstraction, not by coupling `ContactForm` directly to Netlify. See `features/contact/contactDelivery.ts` in section 3's folder blueprint: a small interface (for example `submitContact(data: ContactFormData): Promise<ContactDeliveryResult>`) that a Netlify Forms implementation (`contactDelivery.netlify.ts`) satisfies.
+- The application exposes contact submission through its own clearly named abstraction, not by coupling `ContactForm` directly to Netlify. See `features/home/helpers/contactDelivery.ts` in section 3's folder blueprint: a small interface (for example `submitContact(data: ContactFormData): Promise<ContactDeliveryResult>`) that a Netlify Forms implementation (`contactDelivery.netlify.ts`) satisfies.
 - The Netlify implementation is replaceable later (for example by a different delivery service or a custom backend) without redesigning `ContactForm` or any other component, because every component depends on the abstraction, never on Netlify directly. This mirrors the case-study data-access seam in section 11.
 - Zod validates submissions before accepted data is processed, per section 2.2. Client-side Zod validation provides immediate, accessible user feedback; it can be bypassed by anyone submitting directly to the endpoint, so it must not be described as an authoritative security boundary. Netlify Forms is the receiving and storage boundary for version 1: it is Netlify's platform, not application code, that ultimately accepts and stores the data.
 - **Known version 1 limitation:** direct Netlify Forms submissions are not protected by application-controlled, server-side Zod validation. A submission that bypasses the client entirely reaches Netlify's storage without the application re-checking it. This is accepted for v1 because Netlify Forms already provides platform-level spam handling (below) and because introducing a Server Action purely to close this gap is not, on its own, currently a justified need (section 20.6).
@@ -52,7 +52,7 @@ The two decisions below were approved directly by Lloyd. They are recorded in fu
 - TypeScript provides compile-time type checking only; it verifies nothing at runtime once the application is running.
 - Zod validates data at runtime wherever information enters the application. This includes: contact-form submissions (section 2.1), local case-study JSON content (section 10), and future WordPress API responses (section 11), which is exactly why Zod is retained for v1 even though only one of those three boundaries is active on day one.
 - Validation happens at application boundaries, not scattered through presentation code. For the contact form, the boundary is where the form's data leaves the client (or a future Server Action, if one is ever approved per section 2.1). For content, the boundary is wherever a JSON file is read. For the future WordPress adapter, the boundary is the API response, validated before it is mapped onto the shared `CaseStudy` type.
-- Zod schemas are reusable where appropriate (for example, a shared `contactForm.schema.ts` used by both client-side validation and any future server-side check), and TypeScript types are inferred from schemas with `z.infer<typeof schema>` where this prevents duplicated definitions, rather than a schema and a hand-written interface drifting apart.
+- Zod schemas are reusable where appropriate (for example, a shared `schema/contactForm.ts` used by both client-side validation and any future server-side check), and TypeScript types are inferred from schemas with `z.infer<typeof schema>` where this prevents duplicated definitions, rather than a schema and a hand-written interface drifting apart.
 - Invalid external content must fail safely: a development-time error that is useful for diagnosing the problem, or a user-facing error state (section 15) where the invalid data would otherwise reach a visitor, never a silent pass-through of unvalidated data or an unhandled crash.
 
 ---
@@ -79,52 +79,54 @@ portfolio-v2/
 │   │   └── global-error.tsx
 │   ├── proxy.ts
 │   ├── features/
-│   │   ├── hero/
+│   │   ├── home/
 │   │   │   ├── components/
-│   │   │   │   └── hero/
-│   │   │   │       ├── Hero.tsx
-│   │   │   │       └── Hero.spec.tsx
+│   │   │   │   ├── hero/
+│   │   │   │   │   ├── heroImage/
+│   │   │   │   │   │   ├── HeroImage.tsx
+│   │   │   │   │   │   └── HeroImage.spec.tsx
+│   │   │   │   │   └── introSequence/
+│   │   │   │   │       ├── IntroSequence.tsx
+│   │   │   │   │       └── IntroSequence.spec.tsx
+│   │   │   │   ├── about/
+│   │   │   │   │   └── aboutSection/
+│   │   │   │   │       └── AboutSection.tsx
+│   │   │   │   ├── expertise/
+│   │   │   │   │   └── expertiseGrid/
+│   │   │   │   │       └── ExpertiseGrid.tsx
+│   │   │   │   ├── servicesOffered/
+│   │   │   │   │   ├── servicesOfferedSection/
+│   │   │   │   │   │   └── ServicesOfferedSection.tsx
+│   │   │   │   │   └── servicesRow/
+│   │   │   │   │       └── ServicesRow.tsx
+│   │   │   │   ├── contact/
+│   │   │   │   │   ├── contactForm/
+│   │   │   │   │   │   ├── ContactForm.tsx
+│   │   │   │   │   │   ├── ContactForm.spec.tsx
+│   │   │   │   │   │   └── index.ts
+│   │   │   │   │   └── contactSection/
+│   │   │   │   │       └── ContactSection.tsx
+│   │   │   │   └── trustedBy/
+│   │   │   │       └── logoMarquee/
+│   │   │   │           └── LogoMarquee.tsx
+│   │   │   ├── helpers/
+│   │   │   │   ├── contactDelivery.ts
+│   │   │   │   └── contactDelivery.netlify.ts
+│   │   │   ├── schema/
+│   │   │   │   └── index.ts
 │   │   │   └── index.ts
-│   │   ├── about/
-│   │   │   ├── components/
-│   │   │   │   └── about/
-│   │   │   │       └── About.tsx
-│   │   │   └── index.ts
-│   │   ├── expertise/
-│   │   │   ├── components/
-│   │   │   │   └── expertise-grid/
-│   │   │   │       └── ExpertiseGrid.tsx
-│   │   │   └── index.ts
-│   │   ├── what-i-deliver/
-│   │   │   ├── components/
-│   │   │   │   └── deliver-row/
-│   │   │   │       └── DeliverRow.tsx
-│   │   │   └── index.ts
-│   │   ├── case-studies/
-│   │   │   ├── components/
-│   │   │   │   ├── case-study-card/
-│   │   │   │   │   ├── CaseStudyCard.tsx
-│   │   │   │   │   └── CaseStudyCard.spec.tsx
-│   │   │   │   └── case-study-article/
-│   │   │   │       ├── CaseStudyArticle.tsx
-│   │   │   │       └── CaseStudyArticle.spec.tsx
-│   │   │   ├── caseStudy.schema.ts
-│   │   │   ├── caseStudySource.ts
-│   │   │   └── index.ts
-│   │   ├── contact/
-│   │   │   ├── components/
-│   │   │   │   └── contact-form/
-│   │   │   │       ├── ContactForm.tsx
-│   │   │   │       ├── ContactForm.spec.tsx
-│   │   │   │       └── index.ts
-│   │   │   ├── contactDelivery.ts
-│   │   │   ├── contactDelivery.netlify.ts
-│   │   │   ├── contactForm.schema.ts
-│   │   │   └── index.ts
-│   │   └── trusted-by/
+│   │   └── caseStudies/
 │   │       ├── components/
-│   │       │   └── logo-marquee/
-│   │       │       └── LogoMarquee.tsx
+│   │       │   ├── caseStudyCard/
+│   │       │   │   ├── CaseStudyCard.tsx
+│   │       │   │   └── CaseStudyCard.spec.tsx
+│   │       │   └── caseStudyArticle/
+│   │       │       ├── CaseStudyArticle.tsx
+│   │       │       └── CaseStudyArticle.spec.tsx
+│   │       ├── helpers/
+│   │       │   └── index.ts
+│   │       ├── schema/
+│   │       │   └── index.ts
 │   │       └── index.ts
 │   ├── shared/
 │   │   ├── components/
@@ -132,21 +134,21 @@ portfolio-v2/
 │   │   │   │   ├── button/
 │   │   │   │   │   ├── Button.tsx
 │   │   │   │   │   └── Button.spec.tsx
-│   │   │   │   └── section-eyebrow/
+│   │   │   │   └── sectionEyebrow/
 │   │   │   │       └── SectionEyebrow.tsx
 │   │   │   ├── layout/
 │   │   │   │   └── container/
 │   │   │   │       └── Container.tsx
 │   │   │   └── site/
-│   │   │       ├── site-navigation/
+│   │   │       ├── siteNavigation/
 │   │   │       │   ├── SiteNavigation.tsx
 │   │   │       │   └── SiteNavigation.spec.tsx
-│   │   │       └── site-footer/
+│   │   │       └── siteFooter/
 │   │   │           └── SiteFooter.tsx
 │   │   ├── hooks/
 │   │   │   ├── useReducedMotion.ts
 │   │   │   └── useStickyNavigation.ts
-│   │   ├── lib/
+│   │   ├── helpers/
 │   │   │   └── formatDate.ts
 │   │   └── types/
 │   │       └── locale.ts
@@ -185,7 +187,9 @@ Notable points about this blueprint:
 
 - There is no `src/app/layout.tsx` at the root. `src/app/[locale]/layout.tsx` is the only layout that owns `<html>` and `<body>`; see section 8 for why.
 - There is no `src/middleware.ts`. `src/proxy.ts` is the current Next.js 16 file convention for the same responsibility (previously named Middleware); see section 8.
-- Every feature folder groups its components under a `components/` directory, each component in its own subdirectory, exactly like `shared/components` (section 5). Feature-specific schemas, hooks, helpers, and data-access files stay directly under the feature root, not inside `components/`, and are grouped into their own folder only once enough real files justify it.
+- Every feature folder groups its components under a `components/` directory, each component in its own subdirectory, exactly like `shared/components` (section 5). Data-access and delivery logic lives under `helpers/`, and validation schemas live under `schema/`; neither sits loose at the feature root (section 6).
+- `home` is a single feature, not a parent of several smaller features, and it now contains every section of the home route, including `hero` and `trustedBy`. `home/components/` groups those sections one level below the individual component folders it already used: `hero` (wrapping `heroImage` and `introSequence`, since `Hero.tsx` was renamed `HeroImage.tsx` once the intro sequence was recognised as a second, sibling component rather than part of the same one), `about` (wrapping `aboutSection`, kept for naming symmetry with the other sections even though it holds only one component), `expertise` (wrapping `expertiseGrid`), `servicesOffered` (wrapping `servicesOfferedSection` and `servicesRow`), `contact` (wrapping `contactForm` and `contactSection`), and `trustedBy` (wrapping `logoMarquee`, merged in from the old top-level `features/trustedBy`). None of these section-parent folders (`hero`, `about`, `expertise`, `servicesOffered`, `contact`, `trustedBy`) has its own `components/`, `helpers/`, `schema/`, or `index.ts`; those stay at the `home/` root and are shared by every section, exactly as they would be for any other feature with more than one component group. `home` is grouped this way because every one of these sections composes the single home route (`src/app/[locale]/page.tsx`) and has no meaning outside it. `caseStudies` stays an independent top-level feature: it has its own route (`case-studies/[slug]`), content model, and future WordPress boundary (sections 10-11) independent of the home page.
+- A single-file `helpers/` or `schema/` folder names that file `index.ts` rather than restating the folder's purpose (`caseStudies/schema/index.ts`, `home/schema/index.ts`); see section 6 for the full rule and its `shared/helpers` exemption.
 - A feature root `index.ts` is a deliberate public interface, not an automatic convention; see section 7 for the rule and what it may and may not export.
 - There is no `tailwind.config.ts` in this blueprint. Tailwind CSS 4 is configured CSS-first (section 13); a JavaScript config file is added later only if a specific technical need is identified and documented, and would then be loaded explicitly, not auto-detected.
 - `src/i18n/routing.ts` distinguishes supported locales from published locales (section 8). Routing and static generation only produce publicly accessible routes for published locales, never for a supported-but-unapproved locale.
@@ -215,8 +219,8 @@ This gives a single allowed direction: `app -> features -> shared`, with `conten
 | --- | --- | --- | --- |
 | UI | `shared/components/ui` | Foundational, brand-agnostic interface components with no portfolio-specific meaning | `button/Button.tsx`, `link/Link.tsx`, an `input/Input.tsx` |
 | Layout | `shared/components/layout` | Structural components with no content opinions | `container/Container.tsx`, page-layout primitives |
-| Site | `shared/components/site` | Reusable portfolio-specific compositions shared across routes, and generic-but-reusable compositions not tied to one feature's domain logic | `site-navigation/SiteNavigation.tsx`, `site-footer/SiteFooter.tsx`, a generic table or gallery primitive |
-| Features | `features/*/components/*` | Portfolio-specific functionality and domain logic tied to one capability | `hero/components/hero/Hero.tsx`, `contact/components/contact-form/ContactForm.tsx`, `case-studies/components/case-study-article/CaseStudyArticle.tsx` |
+| Site | `shared/components/site` | Reusable portfolio-specific compositions shared across routes, and generic-but-reusable compositions not tied to one feature's domain logic | `siteNavigation/SiteNavigation.tsx`, `siteFooter/SiteFooter.tsx`, a generic table or gallery primitive |
+| Features | `features/*/components/*` | Portfolio-specific functionality and domain logic tied to one capability | `home/components/hero/heroImage/HeroImage.tsx`, `home/components/contact/contactForm/ContactForm.tsx`, `caseStudies/components/caseStudyArticle/CaseStudyArticle.tsx` |
 
 Per the approved boundaries, `atoms`, `molecules`, `organisms`, and `patterns` are not used as folder names anywhere in this structure.
 
@@ -232,19 +236,19 @@ src/shared/components/
     container/
       Container.tsx
   site/
-    site-navigation/
+    siteNavigation/
       SiteNavigation.tsx
       SiteNavigation.spec.tsx
 
-src/features/contact/
+src/features/home/
   components/
-    contact-form/
+    contactForm/
       ContactForm.tsx
       ContactForm.spec.tsx
       index.ts
 ```
 
-`site` deliberately covers two related but distinct things, and the distinction matters for where new code goes: portfolio-specific shared chrome that is not owned by any single feature (`SiteNavigation`, `SiteFooter`), and any genuinely generic composition (a form shell, a table, a gallery) that carries no business logic of its own. `ContactForm` is not an example of the latter: it owns contact-specific behaviour (validation, submission state, the delivery abstraction from section 2.1) and stays in `features/contact/components/contact-form`. If `ContactForm` is ever built on top of a shared, generic form-shell component with no contact-specific knowledge, that shell belongs in `shared/components/site`; the feature-specific composition around it does not move.
+`site` deliberately covers two related but distinct things, and the distinction matters for where new code goes: portfolio-specific shared chrome that is not owned by any single feature (`SiteNavigation`, `SiteFooter`), and any genuinely generic composition (a form shell, a table, a gallery) that carries no business logic of its own. `ContactForm` is not an example of the latter: it owns contact-specific behaviour (validation, submission state, the delivery abstraction from section 2.1) and stays in `features/home/components/contact/contactForm`, a component group inside `home` (section 3), not a separate feature. If `ContactForm` is ever built on top of a shared, generic form-shell component with no contact-specific knowledge, that shell belongs in `shared/components/site`; the feature-specific composition around it does not move.
 
 A component's category is decided by reusability and specificity, not visual complexity: `SectionEyebrow` (the eyebrow-label pattern identified in `specs/prototype-analysis.md` section 4) is `ui` because it carries no portfolio-specific content.
 
@@ -254,15 +258,17 @@ Each feature folder owns its own components, schemas, and data-access files (sec
 
 ## 6. File and component naming conventions
 
-- Directories use `kebab-case` (`case-studies`, `trusted-by`, `site-navigation`, `contact-form`).
-- React component files use `PascalCase.tsx` (`CaseStudyCard.tsx`, `SiteNavigation.tsx`), each normally in its own `kebab-case` directory (section 5).
-- Non-component TypeScript files use `camelCase.ts`, with no exceptions: `contactDelivery.ts`, `contactDelivery.netlify.ts`, `contactForm.schema.ts`, `caseStudySource.ts`, `caseStudy.schema.ts`, `formatDate.ts`.
-- Hooks use the `useSomething.ts` form (`useReducedMotion.ts`, `useStickyNavigation.ts`), which is `camelCase.ts` with the `use` prefix, not a separate convention.
+- Directories under `src/features` and `src/shared` (feature folders, component folders, section-parent folders, and their subfolders) use `camelCase` (`caseStudies`, `servicesOffered`, `siteNavigation`, `contactForm`, `expertiseGrid`, `caseStudyArticle`). This is deliberately different from route-segment folders, below.
+- Route-segment directories under `src/app` use `kebab-case` and match the public URL exactly (`case-studies`, not `caseStudies`; `not-found.tsx` and other Next.js special files are exempt, below). A feature's internal folder name (for example `features/caseStudies`) is not required to match the route segment that renders it (`app/[locale]/case-studies`); the route owns the public URL, the feature folder is an internal module name.
+- React component files use `PascalCase.tsx` (`CaseStudyCard.tsx`, `SiteNavigation.tsx`), each normally in its own `camelCase` directory (section 5). The directory name is the camelCase form of the component's PascalCase name, with no discretion per folder: `ServicesRow.tsx` lives in `servicesRow/`, `CaseStudyCard.tsx` in `caseStudyCard/`, `SiteNavigation.tsx` in `siteNavigation/`, `LogoMarquee.tsx` in `logoMarquee/`. This applies uniformly to every component folder under `src/features/*/components` and `src/shared/components`, not only the examples shown in section 3's blueprint.
+- Non-component TypeScript files use `camelCase.ts`, with no exceptions: `contactDelivery.ts`, `contactDelivery.netlify.ts`, `formatDate.ts`.
+- Data-access, delivery, and other non-component feature logic lives in a `helpers/` folder inside its owning feature (`caseStudies/helpers/`, `home/helpers/`), not loose at the feature root. Genuinely shared, cross-feature helpers live in `shared/helpers` (`shared/helpers/formatDate.ts`).
+- Hooks use the `useSomething.ts` form (`useReducedMotion.ts`, `useStickyNavigation.ts`), which is `camelCase.ts` with the `use` prefix, not a separate convention. Hooks stay in `shared/hooks`, not `shared/helpers` (section 3): a hook is a React primitive with its own rules, not a plain helper function.
 - Component tests use `ComponentName.spec.tsx`, colocated next to the component they test.
 - Stories use `ComponentName.stories.tsx`, reserved for when Storybook is un-deferred; none are created now.
-- Schemas use descriptive, `camelCase.schema.ts` names (`caseStudy.schema.ts`, `contactForm.schema.ts`), not generic names like `schema.ts` and not kebab-case (`case-study.schema.ts` is not used).
+- Validation schemas live in a `schema/` folder inside their owning feature, one file per domain type, not loose at the feature root.
+- A `helpers/` or `schema/` folder holding exactly one file names that file `index.ts`, letting the folder name alone carry the meaning, with no `.schema` suffix or restated domain name (`caseStudies/helpers/index.ts`, `caseStudies/schema/index.ts`, `home/schema/index.ts`). A folder holding more than one file keeps descriptive `camelCase.ts` names instead, since only one file per folder can be `index.ts` (`home/helpers/contactDelivery.ts` and `contactDelivery.netlify.ts`). `shared/helpers` is exempt from this and always uses descriptive names (`shared/helpers/formatDate.ts`), even when it currently holds only one file: it is a general, cross-feature utility bucket expected to accumulate unrelated files over time, not a single-purpose folder that a lone `index.ts` would suit.
 - Next.js special files retain their required framework names exactly as Next.js defines them (`layout.tsx`, `page.tsx`, `not-found.tsx`, `global-error.tsx`, `sitemap.ts`, `robots.ts`, `proxy.ts`), even where that name would not otherwise match a convention above.
-- Routes use lowercase (`case-studies`, not `caseStudies`).
 - Import alias: `@/*` resolves to `src/*` (section 8).
 
 There is one alias, `@/*`; no additional aliases (`@features`, `@shared`, `@components`) are introduced unless a concrete need appears.
@@ -273,8 +279,8 @@ There is one alias, `@/*`; no additional aliases (`@features`, `@shared`, `@comp
 
 `index.ts` files are permitted only as deliberate public interfaces, not created automatically in every directory.
 
-- A feature may expose its supported public interface through a feature-root `index.ts` (for example `features/contact/index.ts`), used by `src/app` and, where genuinely necessary, by other features (section 4).
-- A component directory may use an `index.ts` when it provides a cleaner public import for that component (for example `features/contact/components/contact-form/index.ts` re-exporting `ContactForm`). This is added when it is useful, not by default for every component directory.
+- A feature may expose its supported public interface through a feature-root `index.ts` (for example `features/home/index.ts`), used by `src/app` and, where genuinely necessary, by other features (section 4).
+- A component directory may use an `index.ts` when it provides a cleaner public import for that component (for example `features/home/components/contact/contactForm/index.ts` re-exporting `ContactForm`). This is added when it is useful, not by default for every component directory.
 - A main component may be exported while its private subcomponents remain unexported.
 - Internal implementation files use direct imports where that makes dependencies clearer, rather than importing everything through a barrel.
 - Do not create a single barrel that exports every shared or application component.
@@ -282,35 +288,48 @@ There is one alias, `@/*`; no additional aliases (`@features`, `@shared`, `@comp
 - Avoid circular dependencies; a feature-root `index.ts` importing from a component that itself imports from the feature root is a sign of one.
 - Importing a feature through its public interface must not permit access to another feature's internal files. The public interface is the only supported entry point.
 
-Example, following the contact feature's shape from section 3:
+Example, following `home`'s shape from section 3 (abbreviated to two sections):
 
 ```text
-src/features/contact/
+src/features/home/
   components/
-    contact-form/
-      ContactForm.tsx
-      ContactForm.spec.tsx
-      index.ts
-  contactDelivery.ts
-  contactDelivery.netlify.ts
-  contactForm.schema.ts
+    hero/
+      heroImage/
+        HeroImage.tsx
+        HeroImage.spec.tsx
+      introSequence/
+        IntroSequence.tsx
+        IntroSequence.spec.tsx
+    contact/
+      contactForm/
+        ContactForm.tsx
+        ContactForm.spec.tsx
+        index.ts
+      contactSection/
+        ContactSection.tsx
+  helpers/
+    contactDelivery.ts
+    contactDelivery.netlify.ts
+  schema/
+    index.ts
   index.ts
 ```
 
-The feature-root `index.ts` exports only the feature's public API, for example:
+The feature-root `index.ts` exports only the feature's public API, one export per section, in the order the sections appear on the page (section 3):
 
 ```ts
-// features/contact/index.ts
-export { ContactForm } from './components/contact-form';
+// features/home/index.ts
+export { HeroImage, type HeroImageContent } from './components/hero/heroImage/HeroImage';
+export { ContactSection, type ContactSectionContent } from './components/contact/contactSection/ContactSection';
 ```
 
 so that `src/app` imports consistently through the single alias, for example:
 
 ```ts
-import { ContactForm } from '@/features/contact';
+import { HeroImage, ContactSection } from '@/features/home';
 ```
 
-`contactDelivery.ts`, `contactDelivery.netlify.ts`, and `contactForm.schema.ts` are not re-exported from the feature root unless something outside the feature genuinely needs them directly; today, nothing does.
+`ContactForm` is not exported from the feature root: only `ContactSection` (the section that renders it) is part of `home`'s public API, per the "main component exported, private subcomponents unexported" rule above. `helpers/contactDelivery.ts`, `helpers/contactDelivery.netlify.ts`, and `schema/index.ts` are not re-exported from the feature root either, unless something outside the feature genuinely needs them directly; today, nothing does.
 
 ---
 
@@ -443,7 +462,7 @@ src/content/
     └── ... (same shape, populated once translated and approved; see section 8)
 ```
 
-Content is read by `features/*` modules (for example `features/case-studies` reads `content/<locale>/case-studies/*.json`) and never by `shared` components, consistent with the dependency-direction rules in section 4.
+Content is read by `features/*` modules (for example `features/caseStudies` reads `content/<locale>/case-studies/*.json`) and never by `shared` components, consistent with the dependency-direction rules in section 4.
 
 Bio, positioning, employer and client names, and logos already approved in `specs/prototype-analysis.md` decision 4 can be carried into `en/site.json` directly. Case-study narrative content is not carried over; see section 10. A locale's content existing here is not sufficient for it to be publicly reachable; it must also be added to `publishedLocales` (section 8).
 
@@ -462,7 +481,7 @@ None of the prototype's existing "AnzaKen" case-study narrative (role, timeline,
 Per the Zod decision (section 2.2), the shape every case study must satisfy is defined as a Zod schema, not a plain TypeScript interface, with the type inferred from it:
 
 ```ts
-// features/case-studies/caseStudy.schema.ts
+// features/caseStudies/schema/index.ts
 import { z } from 'zod';
 
 export const caseStudySchema = z.object({
@@ -495,12 +514,12 @@ Until approved content exists for a given case study, its content file contains 
 `AGENTS.md` section 3 requires that local case-study data can be replaced by headless WordPress later without rewriting presentation components. This is achieved with a single data-access seam:
 
 ```ts
-// features/case-studies/caseStudySource.ts
+// features/caseStudies/helpers/index.ts
 export async function getCaseStudy(slug: string, locale: Locale): Promise<CaseStudy> { ... }
 export async function getAllCaseStudies(locale: Locale): Promise<CaseStudy[]> { ... }
 ```
 
-`CaseStudyArticle` and `CaseStudyCard` call `getCaseStudy` / `getAllCaseStudies` and never read `src/content` directly. The first-release implementation reads local JSON, validated against `caseStudySchema` (section 10) as it is read. The Phase 2 implementation (per the workflow spec's Phase 2: Headless content management) calls the WordPress API instead, validates the response against the same `caseStudySchema` at that boundary per the Zod decision (section 2.2), and maps it onto the same `CaseStudy` type. Only `caseStudySource.ts` changes; every component built against `CaseStudy` is unaffected, and both implementations share one runtime guarantee about what shape the data is in.
+`CaseStudyArticle` and `CaseStudyCard` call `getCaseStudy` / `getAllCaseStudies` and never read `src/content` directly. The first-release implementation reads local JSON, validated against `caseStudySchema` (section 10) as it is read. The Phase 2 implementation (per the workflow spec's Phase 2: Headless content management) calls the WordPress API instead, validates the response against the same `caseStudySchema` at that boundary per the Zod decision (section 2.2), and maps it onto the same `CaseStudy` type. Only `helpers/index.ts` changes; every component built against `CaseStudy` is unaffected, and both implementations share one runtime guarantee about what shape the data is in.
 
 ---
 
@@ -556,7 +575,7 @@ Fonts are not placed in `public/fonts` unless a non-Google local font is ever in
 `AGENTS.md` section 13 requires handling: invalid or incomplete input, submission in progress, successful submission, failed submission, network failure, retry, an alternative direct-contact fallback, missing pages, and unexpected application errors. Section 2.1's approved decision fixes how submissions are delivered; this section wires that decision into the required states.
 
 - **Delivery:** `ContactForm` calls the `contactDelivery.ts` abstraction (section 2.1), never Netlify directly. The first-release implementation (`contactDelivery.netlify.ts`) submits to Netlify Forms using its documented pattern: a form marked `data-netlify="true"` with a hidden `form-name` input, submitted either as a native POST or, for a single-page-style submission without a full navigation, an AJAX `fetch` to `/` with a URL-encoded body (Netlify Forms does not accept JSON).
-- **Validation:** `features/contact/contactForm.schema.ts` is a Zod schema (section 2.2), validated on the client for immediate, accessible feedback. As section 2.1 states, this client-side check is not an authoritative security boundary; Netlify Forms is what actually receives and stores the data, with the known v1 limitation recorded there. This replaces the prototype's `required`-only validation and its placeholder-as-label pattern (`specs/prototype-analysis.md` section 9), adding real `<label>` elements per the production-improvement bucket in that document.
+- **Validation:** `features/home/schema/index.ts` is a Zod schema (section 2.2), validated on the client for immediate, accessible feedback. As section 2.1 states, this client-side check is not an authoritative security boundary; Netlify Forms is what actually receives and stores the data, with the known v1 limitation recorded there. This replaces the prototype's `required`-only validation and its placeholder-as-label pattern (`specs/prototype-analysis.md` section 9), adding real `<label>` elements per the production-improvement bucket in that document.
 - **States:** `ContactForm` (a Client Component, section 12) tracks `idle | submitting | success | validation-error | submission-failure` locally and renders the corresponding state, replacing the prototype's synchronous `alert()` stub. Each state is presented accessibly (announced to assistive technology, not conveyed by colour or icon alone).
 - **Spam protection:** a honeypot field (a hidden input with the `netlify-honeypot` attribute on the form) is used initially, per section 2.1; Netlify's alternative reCAPTCHA (`data-netlify-recaptcha="true"`) is adopted instead only if implementation-time research identifies a concrete reason to prefer it. The honeypot field is hidden using an accessible off-screen technique, not merely `display:none`, and is excluded from the tab order without breaking the visible form's label associations (section 17).
 - **Alternative direct contact:** the approved email address and, once supplied, the phone numbers (deferred inputs, section 22) remain visible near the form as a fallback that does not depend on the form working.
@@ -575,7 +594,7 @@ Mapped against `AGENTS.md` section 19's required test types:
 
 | Requirement | Location | Tooling |
 | --- | --- | --- |
-| Unit tests (locale/route helpers, content validation, metadata generation) | Colocated with the module under test (`src/i18n/routing.spec.ts`, `src/features/case-studies/caseStudy.schema.spec.ts`) | Vitest, see section 20.4 |
+| Unit tests (locale/route helpers, content validation, metadata generation) | Colocated with the module under test (`src/i18n/routing.spec.ts`, `src/features/caseStudies/schema/index.spec.ts`) | Vitest, see section 20.4 |
 | Component/interaction tests (mobile nav, language selection, contact functionality, form validation, keyboard behaviour, error/success states) | Colocated (`SiteNavigation.spec.tsx`, `ContactForm.spec.tsx`) | Vitest + React Testing Library |
 | End-to-end journeys (homepage, every case study, language switch, mobile menu, contact, CV download, page-load checks) | `tests/e2e` | Playwright |
 | Accessibility checks | `tests/accessibility` | Playwright + axe-core |
@@ -760,13 +779,43 @@ Recorded in the format required by `AGENTS.md` section 24. All eight decisions b
 - **Status:** Approved.
 - **Date:** 2026-08-09.
 
+### ADR-009: Folder-naming and grouping correction
+
+- **Context:** Lloyd reviewed the original folder blueprint (v1.0 of this document) and identified that it did not reflect his intended conventions: directory casing, where data-access and schema files live, and how the home-page sections are grouped.
+- **Decision:** Four corrections to sections 3, 5, 6, and 7, applied throughout this document: (1) directories under `src/features` and `src/shared` use `camelCase` instead of `kebab-case` (route-segment directories under `src/app` are unaffected and stay `kebab-case`, since they define the public URL); (2) each feature's data-access and delivery logic moves into a `helpers/` folder (`caseStudies/helpers/caseStudySource.ts`, `home/contact/helpers/contactDelivery.ts`), and `shared/lib` is renamed `shared/helpers` for the same reason; (3) each feature's Zod schema moves into a `schema/` folder with the `.schema` suffix dropped (`caseStudies/schema/caseStudy.ts`, `home/contact/schema/contactForm.ts`); (4) `hero`, `about`, `expertise`, `what-i-deliver` (renamed `servicesOffered`), and `contact` are grouped under a new `features/home/` parent, since they compose the single home route and have no independent meaning outside it. `caseStudies` and `trustedBy` stay top-level (section 3 explains why).
+- **Alternatives considered:** Leaving the v1.0 conventions in place; renaming directories without introducing dedicated `helpers/`/`schema/` folders (keeping data-access and schema files loose at the feature root, only camelCased); keeping `hero` top-level alongside `caseStudies` and `trustedBy` (the first version of this correction did this, then Lloyd asked for `hero` to move into `home/` too).
+- **Reasoning:** This is a direct correction from Lloyd, not a technical tradeoff between competing options; the alternatives above are recorded because they were the status quo being replaced, not because they were seriously weighed against the decision.
+- **Consequences:** Every folder path and code example elsewhere in this document (sections 3, 4, 5, 6, 7, 9, 10, 11, 15, 16, 23) has been updated to match. `DeliverRow` is renamed `ServicesRow` and `WhatIDeliverSection` is renamed `ServicesOfferedSection` as a direct consequence of the `what-i-deliver` → `servicesOffered` rename (section 3); no other component is renamed. By the time this ADR was written, `src/` already existed as a working scaffold (contrary to `CLAUDE.md`'s current-phase assumption that no application code exists yet); every directory, file, and import path in it was migrated to match, verified by a clean `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm build`.
+- **Status:** Approved.
+- **Date:** 2026-08-10.
+
+### ADR-010: Flatten `home`'s sections into one feature
+
+- **Context:** ADR-009 grouped `hero`, `about`, `expertise`, `servicesOffered`, and `contact` under `features/home/`, but kept each as its own nested feature underneath it (`home/hero/components/hero/Hero.tsx`, `home/contact/components/contactForm/...`, each with its own `components/` folder and feature-root `index.ts`). Lloyd pointed out this was still wrong: `home` should have a single `components/` folder, and a section should not get a per-section `components/` folder or a folder repeating its own name.
+- **Decision:** `home` is now one feature, not a parent of five smaller ones. Every section is a direct component group under `home/components/` (`components/hero`, `components/about`, `components/expertiseGrid`, `components/servicesRow`, `components/servicesOfferedSection`, `components/contactForm`, `components/contactSection`), with no intermediate per-section folder. `home/helpers/` (`contactDelivery.ts`, `contactDelivery.netlify.ts`) and `home/schema/` (`contactForm.ts`) sit directly under `home`, not under a `contact` subfolder that no longer exists. `home` has exactly one feature-root `index.ts`, exporting one binding per section (section 7).
+- **Alternatives considered:** The ADR-009 structure (each section as its own nested feature under `home/`); a middle ground keeping per-section folders but dropping only the duplicate self-named subfolder (rejected: it still leaves `home` looking like five features rather than one, which is exactly what Lloyd corrected).
+- **Reasoning:** A direct correction from Lloyd, not a technical tradeoff; `home` composing five sections of one route is the same shape as any other feature with several component groups (e.g. `contact` previously had `contactForm` and `contactSection` as two groups of one feature), so it should follow the same one-`components/`-folder pattern rather than nesting a feature per section.
+- **Consequences:** Sections 3, 5, 6, 7, 15, and 23 updated to match. The five old per-section `index.ts` files (`hero`, `about`, `expertise`, `servicesOffered`, `contact`) are consolidated into one `home/index.ts`. `src/app/[locale]/page.tsx`'s five separate `@/features/home/*` imports become one `@/features/home` import. Every relative import inside the moved files (`ServicesOfferedSection` → `ServicesRow`, `ContactSection` → `ContactForm`, `ContactForm` → `schema/contactForm` and `helpers/contactDelivery`, `contactDelivery.netlify.ts` → `schema/contactForm`) already resolved correctly at the new depth without changes, since sibling relationships were preserved; this was verified, not assumed. `src/` was migrated to match and re-verified with a clean `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm build`.
+- **Status:** Approved.
+- **Date:** 2026-08-10.
+
+### ADR-011: Re-wrap multi-file sections, collapse single-file helpers/schema folders, and merge `trustedBy` into `home`
+
+- **Context:** ADR-010 flattened `home` so every section was a direct component group under `home/components/`. Lloyd then pointed out three further corrections: (1) a multi-component section like `contact` (`contactForm` + `contactSection`) or `servicesOffered` (`servicesRow` + `servicesOfferedSection`) should keep a parent folder grouping its own components, rather than scattering them as unrelated-looking siblings directly under `home/components/`; single-component sections (`about`) get the same parent-folder treatment for symmetry, even though it wraps only one child; (2) `home/schema/contactForm.ts` and, by the same logic, `caseStudies/helpers/caseStudySource.ts` and `caseStudies/schema/caseStudy.ts` restate their folder's purpose in the filename when the folder holds only one file, and should be named `index.ts` instead; (3) `trustedBy` should move into `home` like `hero` did in ADR-009, since it also has no meaning outside the home route.
+- **Decision:** Every section of `home` is now a parent folder under `home/components/` wrapping its own component group(s): `hero` (wrapping `heroImage` and `introSequence`), `about` (wrapping `aboutSection`), `expertise` (wrapping `expertiseGrid`), `servicesOffered` (wrapping `servicesOfferedSection` and `servicesRow`), `contact` (wrapping `contactForm` and `contactSection`), and `trustedBy` (wrapping `logoMarquee`, merged in from the removed top-level `features/trustedBy`). None of these section-parent folders gets its own `components/`, `helpers/`, `schema/`, or `index.ts`; those stay shared at the `home/` root (unchanged from ADR-010). Separately, `Hero.tsx` is renamed `HeroImage.tsx` (component `Hero` → `HeroImage`, `HeroContent` → `HeroImageContent`) now that `heroImage` and `introSequence` are recognised as two sibling components rather than one; `About.tsx` is renamed `AboutSection.tsx` (`About` → `AboutSection`, `AboutContent` → `AboutSectionContent`) for the same section-naming symmetry as `ContactSection`/`ServicesOfferedSection`. A `helpers/` or `schema/` folder holding exactly one file names that file `index.ts` (`home/schema/index.ts`, `caseStudies/helpers/index.ts`, `caseStudies/schema/index.ts`); a folder with more than one file keeps descriptive names, since only one file can be `index.ts` (`home/helpers/` keeps `contactDelivery.ts` and `contactDelivery.netlify.ts`, both named). `shared/helpers` is exempted from the single-file collapse (section 6) since it is a general utility bucket, not a single-purpose folder.
+- **Alternatives considered:** Leaving ADR-010's flat structure in place; collapsing single-file `schema/`/`helpers/` folders everywhere including `shared/helpers`, rejected because `shared/helpers` is expected to gain unrelated files over time and a lone `index.ts` there would need renaming again the moment a second utility is added; renaming only `Hero.tsx`'s file without renaming the exported component, rejected because it breaks the file-name-matches-component-name rule (section 6) and because `HeroImage` already meant something else inside the file (the background photo) until the internal `heroImage*` variables were renamed to `backgroundImage*` to remove that collision.
+- **Reasoning:** A direct correction from Lloyd. The re-wrapping restores a real signal that ADR-010 removed: which components belong to the same section is now visible in the folder tree again, without going back to ADR-009's mistake of giving each section its own `components/`/`helpers/`/`schema/`/`index.ts`. The single-file → `index.ts` collapse removes a name that was purely restating its folder. Merging `trustedBy` into `home` applies the same reasoning ADR-009 already applied to `hero`.
+- **Consequences:** Sections 3, 5, 6, 7, 9-11, 15, 16, and 23 updated to match. `features/trustedBy/` is removed; `home/index.ts` gains a `LogoMarquee`/`TrustedByLogo` export. `page.tsx`'s `Hero`/`About` usages become `HeroImage`/`AboutSection`, and its separate `@/features/trustedBy` import is folded into the single `@/features/home` import. Every relative import inside `contactForm`, `contactSection`, `servicesOfferedSection`, and `contactDelivery.netlify.ts` was checked against the new depth: sibling-folder imports (`../servicesRow/ServicesRow`, `../contactForm/ContactForm`, `../schema` from `home/helpers/`) needed no change, since the wrapping only added a level above already-sibling folders; only `ContactForm.tsx` and `ContactForm.spec.tsx` (now two levels deeper than `home/`) needed their `../../schema` and `../../helpers/contactDelivery` imports updated to `../../../schema` and `../../../helpers/contactDelivery`. `src/` was migrated to match and re-verified with a clean `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm build`.
+- **Status:** Approved.
+- **Date:** 2026-08-10.
+
 ---
 
 ## 22. Remaining decisions and later implementation gates
 
 ### Architecture decisions
 
-All eight architecture decisions (section 21) are approved. None currently block scaffolding.
+All eleven architecture decisions (section 21) are approved. None currently block scaffolding.
 
 ### Implementation-time verification points
 
@@ -804,7 +853,7 @@ For reference only. None of these steps are performed by this document; they req
 4. Add `next-intl` and the `src/i18n` routing configuration, listing `en`, `de`, and `fr` as supported locales but setting `publishedLocales` to `['en']` only until German and French content is approved (section 8), including `src/proxy.ts` and the `next/root-params`-based `src/i18n/request.ts`.
 5. Populate `src/content/en` from the approved bio, positioning, and company/logo content already confirmed in `specs/prototype-analysis.md` decision 4.
 6. Build `shared/components/ui`, `layout`, and `site` first, since `features` depends on them.
-7. Build each `features/*` folder in prototype page order: hero, about, expertise, what-i-deliver, case-studies (with placeholder content per section 10), contact (including the `contactDelivery.ts` abstraction and its Netlify Forms implementation), trusted-by, each with a feature-root `index.ts` per section 7.
+7. Build `features/home`'s sections in prototype page order (`components/hero` with its `heroImage` and `introSequence` component groups, `components/about` with `aboutSection`, `components/expertise` with `expertiseGrid`, `components/servicesOffered` with `servicesOfferedSection` and `servicesRow`, `components/contact` with `contactForm` and `contactSection`, including the `helpers/contactDelivery.ts` abstraction and its Netlify Forms implementation, and `components/trustedBy` with `logoMarquee`), then `caseStudies` (with placeholder content per section 10), each with a feature-root `index.ts` per section 7.
 8. Wire the case-study data-access seam (section 11) against local content, validated with Zod (section 10).
 9. Add the Vitest and Playwright configurations, and the `tests/e2e`, `tests/accessibility`, `tests/visual` suites.
 10. Rely on Netlify's automatically managed Next.js Runtime (section 18). Request approval to push, per `AGENTS.md` section 26; an approved push may automatically create a Netlify preview without requiring a second approval. A manual external preview deployment and production promotion each require their own separate, explicit approval.

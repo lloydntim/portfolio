@@ -1,0 +1,29 @@
+{
+  "slug": "vocapp",
+  "order": 1,
+  "title": "VocApp",
+  "summary": "Une application mobile-first d'apprentissage des langues, adossée à une API et conçue intégralement pour AnzaKen, avec mémorisation ludique, traduction et synthèse vocale.",
+  "role": "Senior Product Engineer",
+  "timeline": "août 2025 – aujourd'hui",
+  "stack": [
+    "React",
+    "Next.js",
+    "Node.js",
+    "Express",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis",
+    "Authentification JWT",
+    "Google Cloud Translation & Text-to-Speech",
+    "Docker",
+    "GitHub Actions",
+    "Sentry"
+  ],
+  "challenge": "AnzaKen avait besoin d'un produit d'apprentissage des langues prêt pour la production, connecté à une API et conçu de bout en bout, avec authentification sécurisée, données validées et déploiement fiable. Des pratiques assistées par l'IA et guidées par les spécifications devaient accélérer le développement sans compromettre la qualité.",
+  "approach": "J'ai pris en charge l'architecture produit sur toute la stack : un frontend Next.js/React structuré par fonctionnalités et un backend Node.js/Express (TypeScript) en couches — routes, contrôleurs, services et repositories — adossé à PostgreSQL et Redis. J'ai mis en place l'authentification JWT, la validation des entrées et un accès API sécurisé, puis intégré Google Cloud Translation et la synthèse vocale aux fonctions d'apprentissage centrales. Claude Code, Codex et Copilot ont soutenu des workflows guidés par les spécifications pour l'implémentation, les tests et la revue de code ; Docker et GitHub Actions ont assuré la CI/CD, Sentry l'observabilité.",
+  "outcome": "VocApp est en ligne et activement développée. Son architecture et son pipeline CI/CD permettent de livrer en continu via le même workflow assisté par l'IA et guidé par les spécifications.",
+  "coverImage": {
+    "src": "/case-study-vocapp.webp",
+    "alt": "Capture d'écran du tableau de bord web VocApp, montrant les listes de vocabulaire et la progression de maîtrise"
+  }
+}

@@ -1,0 +1,62 @@
+/*
+ * The underline reveal (::after with a scaleX transform on a cubic-bezier
+ * curve) and the hamburger's three-span open/close transform are clearer
+ * here than as a long Tailwind arbitrary-value class list (AGENTS.md
+ * section 9: CSS Modules where Tailwind is not sufficient for scoped
+ * animation).
+ */
+.navLink {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navLink::after {
+    transition: none;
+  }
+}
+
+.toggleBar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.toggleOpen .toggleBar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.toggleOpen .toggleBar:nth-child(2) {
+  opacity: 0;
+}
+
+.toggleOpen .toggleBar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggleBar {
+    transition: none;
+  }
+}

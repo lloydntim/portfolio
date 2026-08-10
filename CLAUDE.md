@@ -119,7 +119,7 @@ Codex will provide an independent review of every pull request.
 
 ## Git and deployment
 
-You may create focused local commits after completing an approved stage.
+You may create focused local commits after completing an approved stage, but never commit automatically. After finishing a feature, fix, or other coding task, ask Lloyd whether to commit it, rather than committing unprompted or silently leaving it uncommitted. This applies once the work is a complete, verified checkpoint (its own tests, typecheck, and lint pass) — not after every intermediate edit during an iterative or exploratory task, since asking at that granularity would interrupt more than it helps.
 
 Do not:
 
