@@ -3,10 +3,10 @@
  * sections 5-7). Tailwind CSS 4 CSS-first configuration; no tailwind.config.ts.
  */
 @theme {
-  /* Breakpoints: the prototype's six observed reference measurements
-     (specs/prototype-analysis.md section 7), pending final approval per
-     decision 7. Overriding Tailwind's defaults so xs/sm/md/lg/xl/2xl map
-     exactly onto them. */
+  /* Breakpoints: the prototype's six observed reference measurements,
+     selected for the first release (specs/prototype-analysis.md section 7).
+     Tailwind's defaults are overridden so xs/sm/md/lg/xl/2xl map exactly
+     onto them. */
   --breakpoint-xs: 500px;
   --breakpoint-sm: 560px;
   --breakpoint-md: 700px;

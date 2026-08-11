@@ -1,8 +1,9 @@
 # Agentic Engineering Workflow Specification
 
 **Owner:** Lloyd Ntim
-**Status:** Draft v0.3
+**Status:** Active draft v0.4, applied to the portfolio
 **Purpose:** Define the AI-assisted software delivery process used for the portfolio project and reusable across future product and engineering work.
+**Last updated:** 2026-08-11
 
 ## Document boundaries
 
@@ -11,6 +12,7 @@ This document defines the reusable Agentic Engineering delivery process.
 - `AGENTS.md` defines the repository-wide operating rules and approval boundaries for coding agents.
 - `CLAUDE.md` provides a concise Claude Code entry point and refers back to `AGENTS.md`.
 - Approved product, feature, and architecture specifications define what should be built.
+- `docs/agentic-engineering-worked-example.md` records an evidence-backed application of the workflow and the traceability gaps still to close.
 
 These documents should reference one another rather than duplicate the same detailed instructions.
 
@@ -396,24 +398,21 @@ A dedicated workflow page may explain the nine stages through one practical proj
 
 ### Repository records
 
-The portfolio repository may eventually contain records such as:
+The portfolio repository currently contains:
 
 ```text
 AGENTS.md
 specs/
-  product/
-  features/
-architecture/
-  decisions/
-plans/
-evaluations/
+  architecture/
+    application-architecture.md
+  workflows/
+    agentic-engineering-workflow.md
 tests/
 docs/
-  agentic-engineering-playbook.md
-  coaching-guide.md
+  agentic-engineering-worked-example.md
 ```
 
-The final folder structure requires approval before scaffolding. The traceability chain for a selected feature should be:
+The implemented repository structure is approved in `specs/architecture/application-architecture.md`. One selected feature should preserve the following traceability chain:
 
 ```text
 Requirement
@@ -500,17 +499,22 @@ A portfolio feature is done only when:
 - Add further automation or content workflows when they solve a recurring need.
 - Add privacy-conscious analytics, centralized error monitoring, logging, and uptime monitoring after the first release.
 
-## 14. Open decisions
+## 14. Decision status and remaining gates
 
-The following decisions or inputs are intentionally deferred:
+The following decisions have been resolved in the current architecture and implementation:
 
-- Final approved content for the VocApp, Vorwerk, and Guilds case studies
-- The English CV file and later German CV file
-- The approved UK and German telephone numbers
-- The exact application folder structure and detailed code conventions
-- The contact-form implementation approach
-- The Agent SDK and cloud platform used for a future runtime agent capability
-- Which portfolio feature will provide the first complete traceability chain
-- The analytics and monitoring tools used after the first release
+- The application folder structure and code conventions are approved through ADR-009, ADR-010, and ADR-011.
+- Netlify Forms is the version 1 contact delivery mechanism through ADR-007.
+- English, German, and French content files exist in the implemented content model.
+- The English CV and UK and German telephone numbers are integrated into the current application.
+- VocApp, Vorwerk, and Guilds are implemented as the three public case studies.
+
+The following decisions or approvals remain intentionally deferred:
+
+- Human factual and publication approval for any future case-study or public-copy revision.
+- The final German CV.
+- The Agent SDK and cloud platform used for a future runtime agent capability.
+- A fully persisted traceability chain that includes the original task package, independent review record, release result, and learning artifact. The current worked example identifies the evidence already available and the missing records.
+- The analytics and monitoring tools used after the first release.
 
 These decisions should be resolved before their affected implementation stage, not guessed by an agent.

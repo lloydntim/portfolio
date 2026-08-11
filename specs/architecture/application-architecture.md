@@ -4,7 +4,7 @@
 **Scope:** The Next.js application architecture for the portfolio's first release. As of ADR-009/ADR-010 (2026-08-10), a working `src/` scaffold with installed dependencies already exists, ahead of this document's original assumption; this document remains the source of truth for its structure.
 **Inputs:** `AGENTS.md`, `CLAUDE.md`, `specs/workflows/agentic-engineering-workflow.md`, `specs/prototype-analysis.md`.
 
-This document does not modify `reference/prototype/`, change public content, or configure deployment. All eleven architecture decisions in section 21 are approved (section 2 records the two decided directly by Lloyd; section 20 explains the reasoning behind the first eight; ADR-009, ADR-010, and ADR-011 record folder-naming and grouping corrections Lloyd requested directly on 2026-08-10, migrated into the existing `src/` scaffold and verified). The independent Codex review's findings have been corrected (locale publication strategy, not-found explanation, preview-deployment wording, and the glossary), and this document is now approved as the architecture for scaffolding. No architecture decision blocks scaffolding; section 22 lists the later implementation and content gates that remain, none of which require further restructuring beyond ADR-009/ADR-010/ADR-011's corrections.
+This document does not modify `reference/prototype/` or change public content. All eleven architecture decisions in section 21 are approved. Section 2 records the two decisions made directly by Lloyd; section 20 explains the reasoning behind the first eight; ADR-009, ADR-010, and ADR-011 record folder-naming and grouping corrections Lloyd requested directly on 2026-08-10. The independent Codex review's findings were corrected, including locale publication strategy, not-found behavior, preview-deployment wording, and the glossary. The architecture has since been implemented in `src/`, and this document remains its source of truth. Section 22 records the later implementation and content gates that remain.
 
 ---
 
@@ -25,7 +25,7 @@ This document does not modify `reference/prototype/`, change public content, or 
 - Analytics, tracking, or monitoring of any kind (`AGENTS.md` section 27).
 - A runtime Agent SDK application (workflow spec section 8; explicitly a later extension).
 - Pricing or rate information anywhere in the product (`AGENTS.md` section 10).
-- Final case-study content, CV files, and phone numbers: these are deferred inputs (`specs/prototype-analysis.md` section 17), not architectural concerns. See section 22.
+- Future changes to case-study content, CV files, and phone numbers are content concerns rather than architectural changes. The first release includes the approved case studies, English CV, and UK and German phone numbers.
 - A final, exhaustive breakpoint specification: the prototype's six breakpoints are reference measurements, and the final responsive system still requires separate visual approval (`specs/prototype-analysis.md` decision 7).
 
 ---
@@ -341,17 +341,17 @@ Routes live under `src/app/[locale]/...`, with `locale` constrained to `en`, `de
 
 Two related but distinct lists live in `src/i18n/routing.ts`:
 
-- **Supported locales**: `en`, `de`, `fr`, defined via next-intl's `defineRouting`. This is the full, planned locale set; it drives message loading, the locale switcher, and which locale segments the application's i18n configuration understands.
-- **Published locales**: a separate, explicitly maintained `publishedLocales` list, initially `['en']` only. This is the subset of supported locales whose content is translated and approved for public release, per `AGENTS.md` section 4.
+- **Supported locales**: `en`, `de`, `fr`, defined via next-intl's `defineRouting`. This is the current locale set; it drives message loading, the locale switcher, and which locale segments the application's i18n configuration understands.
+- **Published locales**: a separate, explicitly maintained `publishedLocales` list, currently `['en', 'de', 'fr']`. This is the subset of supported locales whose content is translated and approved for public release, per `AGENTS.md` section 4.
 
-Routing, `generateStaticParams`, and locale validation (below) are all driven by `publishedLocales`, not the full supported-locale list. A locale can be supported (the application knows how to render it once content exists) without being published (publicly reachable). Before the first production release, `en`, `de`, and `fr` must all be approved and added to `publishedLocales`; until then, only `en` is published, and `de`/`fr` remain supported-but-unpublished.
+Routing, `generateStaticParams`, and locale validation (below) are all driven by `publishedLocales`, not the full supported-locale list. A locale can be supported without being published, although all three currently supported locales were reviewed and published for the first release.
 
 This section documents the current Next.js 16 and next-intl architecture for that requirement. Both `next/root-params` (stable without an experimental flag as of Next.js 16.3, per Next.js's own changelog and documentation) and next-intl's corresponding support for it (added in next-intl 4.13.5, which deprecated the older `setRequestLocale` approach) are very recently stabilized. Before scaffolding installs any package, `AGENTS.md` section 2's standing instruction to verify current tool and dependency guidance applies here specifically: confirm the exact current stable Next.js release (targeting Next.js 16, minimum 16.3 for non-experimental `next/root-params`) and the exact current next-intl release against their own release notes at that time, not against the versions cited in this document.
 
 ### Locale resolution without `setRequestLocale`
 
 - `src/i18n/routing.ts` defines the supported locales and default locale via next-intl's `defineRouting`, unchanged in shape from before.
-- `src/i18n/request.ts` reads the locale using `next/root-params`'s generated getter for the `[locale]` segment (for example `rootParams.locale()`) and validates it against `publishedLocales`, not the full supported-locale list, calling Next.js's `notFound()` when it does not match a published locale. This means a supported-but-unpublished locale (for example `de` before German is approved) is rejected exactly like an invalid locale, rather than trusting an unvalidated or merely-supported route parameter:
+- `src/i18n/request.ts` reads the locale using `next/root-params`'s generated getter for the `[locale]` segment (for example `rootParams.locale()`) and validates it against `publishedLocales`, not the full supported-locale list, calling Next.js's `notFound()` when it does not match a published locale. This means any future supported-but-unpublished locale would be rejected like an invalid locale rather than trusting an unvalidated or merely supported route parameter:
 
   ```ts
   // src/i18n/request.ts
@@ -374,8 +374,8 @@ This section documents the current Next.js 16 and next-intl architecture for tha
 
 ### Static generation
 
-- `src/app/[locale]/layout.tsx` calls `generateStaticParams`, returning only the currently published locales (`publishedLocales`, above), not the full supported-locale list. This is a standard Next.js App Router API, independent of the `setRequestLocale`/`next/root-params` change above. Only published locales are statically generated and therefore publicly reachable at build time; `de` and `fr` are not pre-rendered, and are not publicly accessible routes, until they are added to `publishedLocales` (section 3), consistent with `AGENTS.md` section 3's requirement to avoid unnecessary per-request rendering.
-- The layout also sets `export const dynamicParams = false`, so a locale segment outside `publishedLocales` (for example `/de/...` before German is published) is not rendered on demand either. It resolves to not-found (below), the same as a genuinely invalid locale. This is what actually prevents an unapproved locale's content from being publicly accessible; it is enforced by the routing configuration, not left as a documentation-only convention.
+- `src/app/[locale]/layout.tsx` calls `generateStaticParams`, returning only the currently published locales (`publishedLocales`, above), not the full supported-locale list. This is a standard Next.js App Router API, independent of the `setRequestLocale`/`next/root-params` change above. English, German, and French are all statically generated for the current release.
+- The layout also sets `export const dynamicParams = false`, so a locale segment outside `publishedLocales` is not rendered on demand. It resolves to not-found (below), the same as a genuinely invalid locale. This prevents unapproved locale content from becoming publicly accessible and enforces publication through the routing configuration rather than a documentation-only convention.
 
 ### The root layout and document language
 
@@ -429,14 +429,13 @@ Because this interaction between `next/root-params`, `proxy.ts`, and not-found r
 
 Representative routes today use one canonical, English-structured path per page (for example `/[locale]/case-studies/[slug]`), not translated path segments. If localized public pathnames are introduced later (for example `/de/kontakt` instead of `/de/contact`), next-intl's `pathnames` routing configuration provides the per-locale aliases while the canonical internal route definition stays single-sourced in `src/i18n/routing.ts`; the exact translated URL wording is content and translation territory requiring approval (`AGENTS.md` section 4), not an architecture decision made by this document.
 
-### Scaffolding versus first production release
+### Locale publication requirements
 
-These are two different milestones and this architecture treats them differently:
+The first release satisfied the following publication requirements. They remain applicable when another locale is introduced:
 
-- English may be implemented first during development. This is expected and does not block scaffolding.
-- German and French may be prepared as supported locales as part of the i18n architecture during scaffolding (locale routing and messages wired, `de`/`fr` recognised by `next-intl`'s routing configuration) without their content existing yet, but they are not added to `publishedLocales`, so no `de`/`fr` route is statically generated or publicly reachable (above).
+- A locale may be implemented as a supported locale during development without being added to `publishedLocales`.
 - Empty, placeholder, or incomplete locale routes must not be publicly released. A locale existing in the supported-locale configuration is not the same as that locale being published; only `publishedLocales` controls what is publicly reachable, per the static-generation and validation behaviour above.
-- English, German, and French content must all be reviewed and approved, and each locale added to `publishedLocales`, before the first production release, not before scaffolding. Translations must preserve the meaning of the approved English source, per `AGENTS.md` section 4, rather than following it literally.
+- Translated content must be reviewed and approved before its locale is added to `publishedLocales`. Translations must preserve the meaning of the approved English source, per `AGENTS.md` section 4, rather than following it literally.
 - Translation review supports a side-by-side comparison (content identifier, English source, translated content, language, review status, reviewer notes), per `AGENTS.md` section 4.
 - German requires particular review attention for tone, meaning, and suitability for the DACH market, per `AGENTS.md` section 4.
 
@@ -557,10 +556,10 @@ Tailwind CSS 4 uses CSS-first configuration. Per official Tailwind documentation
 
 `public/` contains only deployable static assets, per the approved boundary. Representative contents: `favicon.ico`, `logos/*.svg` (the trusted-by marquee logos, unchanged from the prototype), and optimized image sources for the hero, portrait, and contact background.
 
-Two asset issues carried over from `specs/prototype-analysis.md` sections 5, 11, and 16 are asset-organization concerns, not architecture decisions:
+The prototype analysis identified two asset concerns that were addressed during first-release implementation:
 
-- `hero.jpg` (1.8 MB at 1535x1024) needs recompression or a WebP/AVIF re-encode before it is placed in `public/`. This does not change its visual appearance.
-- `portrait.jpg` (163x195px) is a pending replacement asset (decision 6); the current file is not fit to ship at production resolution.
+- The prototype's `hero.jpg` was replaced by responsive production image assets while preserving the approved appearance.
+- The prototype's 163x195px `portrait.jpg` remains as a read-only reference, while the production application uses `public/cv-photo.webp` at 1055x1266px.
 
 `next/image` is used for raster photographs and other assets that benefit from optimisation: the hero, portrait, contact background, and case-study cover images. Each of these is given appropriate dimensions (explicit `width`/`height`, or `fill` with `sizes`), responsive sizing, and meaningful alternative text, directly closing the CLS risk noted in `specs/prototype-analysis.md` section 11. Where an image genuinely needs preloading, current `next/image` guidance is followed: the `preload` prop, used only for the actual LCP candidate (most likely the hero or portrait), not applied broadly.
 
@@ -578,7 +577,7 @@ Fonts are not placed in `public/fonts` unless a non-Google local font is ever in
 - **Validation:** `features/home/schema/index.ts` is a Zod schema (section 2.2), validated on the client for immediate, accessible feedback. As section 2.1 states, this client-side check is not an authoritative security boundary; Netlify Forms is what actually receives and stores the data, with the known v1 limitation recorded there. This replaces the prototype's `required`-only validation and its placeholder-as-label pattern (`specs/prototype-analysis.md` section 9), adding real `<label>` elements per the production-improvement bucket in that document.
 - **States:** `ContactForm` (a Client Component, section 12) tracks `idle | submitting | success | validation-error | submission-failure` locally and renders the corresponding state, replacing the prototype's synchronous `alert()` stub. Each state is presented accessibly (announced to assistive technology, not conveyed by colour or icon alone).
 - **Spam protection:** a honeypot field (a hidden input with the `netlify-honeypot` attribute on the form) is used initially, per section 2.1; Netlify's alternative reCAPTCHA (`data-netlify-recaptcha="true"`) is adopted instead only if implementation-time research identifies a concrete reason to prefer it. The honeypot field is hidden using an accessible off-screen technique, not merely `display:none`, and is excluded from the tab order without breaking the visible form's label associations (section 17).
-- **Alternative direct contact:** the approved email address and, once supplied, the phone numbers (deferred inputs, section 22) remain visible near the form as a fallback that does not depend on the form working.
+- **Alternative direct contact:** the approved email address and UK and German phone numbers remain visible near the form as a fallback that does not depend on the form working.
 - **Missing pages:** `src/app/[locale]/not-found.tsx` (section 8), an approved design extension per `specs/prototype-analysis.md` classification bucket 3, matching the prototype's visual language.
 - **Unexpected application errors:** `src/app/global-error.tsx`, following `AGENTS.md` section 13's rule that production errors must not expose stack traces, secrets, internal paths, infrastructure details, or form contents.
 
@@ -697,7 +696,7 @@ Each item below records the comparison of reasonable alternatives that led to an
 
 ## 21. Architecture decision records
 
-Recorded in the format required by `AGENTS.md` section 24. All eight decisions below are approved.
+Recorded in the format required by `AGENTS.md` section 24. All eleven decisions below are approved.
 
 ### ADR-001: Font loading via `next/font/google`
 
@@ -811,31 +810,29 @@ Recorded in the format required by `AGENTS.md` section 24. All eight decisions b
 
 ---
 
-## 22. Remaining decisions and later implementation gates
+## 22. Post-release decisions and future improvements
 
 ### Architecture decisions
 
-All eleven architecture decisions (section 21) are approved. None currently block scaffolding.
+All eleven architecture decisions (section 21) are approved and implemented. None block the released application or ongoing maintenance.
 
 ### Implementation-time verification points
 
-These are not open decisions; they are places where this document's guidance should be re-checked against whichever exact package versions are current at scaffolding time, because the underlying APIs stabilized very recently:
+These are not open decisions. They are areas to re-check during future dependency upgrades because the underlying APIs stabilized recently:
 
 - The exact current stable Next.js version (16.3 or later, for non-experimental `next/root-params`) and next-intl version, per section 8.
 - The precise interaction of `next/root-params`, `src/proxy.ts`, and not-found rendering for the three cases described in section 8, since this combination is new.
 
-### Later implementation or content gates (do not block scaffolding)
+### Future improvements
 
-These are identified here so the architecture shows where they plug in, without restructuring anything once they resolve:
+These are optional post-release refinements. They do not affect the validity of the current first release:
 
 - **Final breakpoint validation** (`specs/prototype-analysis.md` decision 7): fills in the final values in section 13's `@theme` breakpoint tokens; no structural change.
 - **Intro-animation visual comparison and approval** (`specs/prototype-analysis.md` decision 9): confirms the choreography already described in section 17 and `specs/prototype-analysis.md` section 8; no structural change.
 - **Sticky-navigation visual comparison and approval** (`specs/prototype-analysis.md` decision 8): confirms `SiteNavigation`'s behaviour already described in section 12; no structural change.
 - **Error-state visual design** (section 15): fills in the visual treatment of the contact-form, 404, and unexpected-error states already wired in section 15; no structural change.
-- **English CV file**: referenced by an existing download link in content (section 9); no structural change once supplied.
 - **Future German CV file**: same content slot as the English CV, added once available; no structural change.
-- **UK telephone number** and **German telephone number**: fill the contact section's content (section 9); no structural change.
-- **Final VocApp, Vorwerk, and Guilds case-study content**: fills the placeholder content files described in section 10, validated by the same `caseStudySchema`; no structural change.
+- **Future content revisions**: changes to the current approved case studies, contact details, or other public copy continue to use the existing validation and translation process.
 
 ### Also out of scope for this architecture
 
@@ -843,14 +840,14 @@ These are identified here so the architecture shows where they plug in, without 
 
 ---
 
-## 23. Proposed scaffolding sequence
+## 23. Initial implementation sequence
 
-For reference only. None of these steps are performed by this document; they require separate approval to scaffold, per `AGENTS.md` section 5 and `CLAUDE.md`'s current-phase restrictions.
+Retained as a historical record of the first-release implementation sequence. The application has already been scaffolded, implemented, and released.
 
 1. Verify the exact current stable Next.js (16.3 or later) and next-intl versions against their own release notes (section 8, section 22).
 2. Scaffold the Next.js App Router project with `pnpm`, strict TypeScript, and the `@/*` alias.
 3. Add Tailwind CSS 4 and the `@theme` tokens in `src/app/theme.css` (section 13); no `tailwind.config.ts` unless a specific need arises.
-4. Add `next-intl` and the `src/i18n` routing configuration, listing `en`, `de`, and `fr` as supported locales but setting `publishedLocales` to `['en']` only until German and French content is approved (section 8), including `src/proxy.ts` and the `next/root-params`-based `src/i18n/request.ts`.
+4. Add `next-intl` and the `src/i18n` routing configuration, initially publishing English and then adding German and French after their content was approved (section 8), including `src/proxy.ts` and the `next/root-params`-based `src/i18n/request.ts`.
 5. Populate `src/content/en` from the approved bio, positioning, and company/logo content already confirmed in `specs/prototype-analysis.md` decision 4.
 6. Build `shared/components/ui`, `layout`, and `site` first, since `features` depends on them.
 7. Build `features/home`'s sections in prototype page order (`components/hero` with its `heroImage` and `introSequence` component groups, `components/about` with `aboutSection`, `components/expertise` with `expertiseGrid`, `components/servicesOffered` with `servicesOfferedSection` and `servicesRow`, `components/contact` with `contactForm` and `contactSection`, including the `helpers/contactDelivery.ts` abstraction and its Netlify Forms implementation, and `components/trustedBy` with `logoMarquee`), then `caseStudies` (with placeholder content per section 10), each with a feature-root `index.ts` per section 7.

@@ -1,6 +1,6 @@
 # Prototype Analysis
 
-**Status:** Draft v0.2
+**Status:** Active reference v0.3, prototype decisions resolved
 **Scope:** Read-only analysis of `reference/prototype/` (`index.html`, `case-studies.html`, `script.js`, `styles.css`, `README.md`, `assets/`).
 **Method:** Full read of every source file plus file-level inspection of assets (size, pixel dimensions). No dev server was run and no prototype file was modified.
 
@@ -12,8 +12,8 @@ This document is analysis only. It does not propose a folder structure or begin 
 2. The prototype's existing "AnzaKen" case-study narrative is not approved VocApp content and must not be reused.
 3. AOE is not a featured case study. AOE may remain in the trusted-by logo marquee.
 4. The existing bio, company names, employer names, and supplied logos are approved for the initial release.
-5. Final case-study content, the English CV, the later German CV, and the UK and German telephone numbers are deferred inputs, to be requested when needed during implementation rather than treated as open product decisions.
-6. The low-resolution portrait is a pending replacement asset.
+5. The production application now includes public case-study content, the English CV, and UK and German telephone numbers. The later German CV remains deferred.
+6. The production application uses a replacement high-resolution portrait while the original low-resolution prototype asset remains unchanged as a read-only reference.
 7. The six observed prototype breakpoints are reference measurements, not a fixed list that must all be preserved before architecture review. The final responsive system must preserve the prototype's visual behaviour and requires approval.
 8. Navigation behaviour is approved: original position over the hero, sticky on scroll, returning to the original state at the top, preserving the prototype's visual style, with no sliding motion under reduced motion. This is an approved design extension requiring visual verification.
 9. Intro animation behaviour is approved: preserve the existing choreography on the first visit per browser session, allow a click/keyboard skip, bypass entirely under reduced motion, and design the skip control to match the prototype. This is included in visual and interaction testing.
@@ -66,7 +66,7 @@ The bio, company names, employer names, and supplied logos listed below are appr
 - **Contact:** "Let's build something." / "Currently available full-time for permanent or freelance work." / "Based across the DACH region & UK, commuting between the two, and available remotely."
 - **Trusted-by logos:** E.ON, Kia, Deutsche Bank, Sony, Vorwerk, Skyscanner, Harrods, AKQA, AOE, Heycar, Native Instruments, Ryanair, Waitrose (13 distinct brands)
 - **Footer:** "© 2026 Lloyd Ntim", GitHub, LinkedIn, `info@lloydntim.com`
-- **Missing entirely:** UK phone number, German phone number. Both are required for the first release per `AGENTS.md` section 10 and are deferred inputs (section 17).
+- **Missing from the prototype:** UK and German phone numbers. Both are present in the released production application.
 
 The AnzaKen case-study narrative (role, timeline, stack, stats, quote) is not approved factual content and is not approved VocApp content. See section 3.
 
@@ -86,11 +86,11 @@ This has now been resolved by decisions 1 to 3:
 
 | Approved (`AGENTS.md`) | Prototype today | Resolution |
 | --- | --- | --- |
-| 1. VocApp (built for client AnzaKen) | "AnzaKen" as the case study itself (agritech marketplace) | The prototype's AnzaKen narrative is not approved VocApp content. Final VocApp copy is a deferred input (section 17). The `#anzaken` markup may still serve as a structural template. |
-| 2. Vorwerk | Vorwerk (card exists, case-study copy not written) | Identity confirmed. Case-study copy is a deferred input. |
-| 3. Guilds | AOE | AOE is not a featured case study. Guilds' case-study content is a deferred input. AOE may remain in the trusted-by logo marquee (section 2). |
+| 1. VocApp (built for client AnzaKen) | "AnzaKen" as the case study itself (agritech marketplace) | The prototype's AnzaKen narrative is not approved VocApp content. The production application contains the current approved VocApp copy. The `#anzaken` markup may still serve as a structural reference. |
+| 2. Vorwerk | Vorwerk (card exists, case-study copy not written) | Identity confirmed. The production application contains the current approved case-study copy. |
+| 3. Guilds | AOE | AOE is not a featured case study. The production application contains the current approved Guilds copy. AOE remains in the trusted-by logo marquee (section 2). |
 
-No further decision is needed on case-study identity or order. What remains is content: the approved facts and copy for each of the three case studies, tracked as deferred inputs in section 17.
+No further decision is needed on case-study identity, order, or first-release copy. Future factual or copy changes remain subject to approval.
 
 ---
 
@@ -158,7 +158,7 @@ Loaded via a single Google Fonts CSS2 `<link>` with `preconnect` hints (see perf
 | --- | --- | --- | --- |
 | `hero.jpg` | 1535x1024 | 1.8 MB | Heavy for its resolution. Has `blur(1.5px)` and `saturate(.85)` applied at render time, so a lower-fidelity, more-compressed source would look identical: a good optimisation candidate |
 | `contact-bg.jpg` | 2192x1461 | 160 KB | Already reasonably compressed |
-| `portrait.jpg` | **163x195** | 4.3 KB | Displayed up to 280px wide (and needs 2x for retina, roughly 560px). This is a pending replacement asset (decision 6): the current source is far too low-resolution and will look visibly pixelated in production |
+| `portrait.jpg` | **163x195** | 4.3 KB | Too small for production use at the prototype's display size. The production application uses the approved replacement `public/cv-photo.webp` while this prototype asset remains unchanged. |
 | `logo-intro.mp4` | n/a | 149 KB | Autoplays muted on every `index.html` load |
 | `logo.svg` + 13 brand logos (bw + color pairs, some solo) | n/a | 1.2 to 16 KB each | Sony's pair is the largest (16 KB each). Rest are small |
 
@@ -248,7 +248,7 @@ Reduced-motion support is an engineering requirement for the production implemen
 ## 11. Performance risks
 
 - **`hero.jpg` is 1.8 MB** at a relatively modest 1535x1024: heavy for a background image that additionally receives a `blur()` filter (fine detail is invisible anyway). A recompressed or resized WebP or AVIF source would very likely cut this substantially.
-- **`portrait.jpg` is only 163x195px**, undersized for its display width (up to 280px, roughly 560px at 2x). This is the pending replacement asset noted in decision 6 (see also section 16).
+- **`portrait.jpg` is only 163x195px**, undersized for its display width (up to 280px, roughly 560px at 2x). The released application resolves this prototype limitation with `public/cv-photo.webp` at 1055x1266px.
 - **Google Fonts loaded via a render-blocking `<link>`** to `fonts.googleapis.com` and `fonts.gstatic.com` rather than self-hosted. `next/font` can self-host and eliminate this extra origin and request round-trip in the production build.
 - **Marquee duplicates the full 14-logo, 28-image set to 56 `<img>` tags** in the DOM for the seamless CSS-only loop: real, if modest, extra weight and DOM size.
 - **No explicit width/height attributes on `<img>` tags** (portrait, logos): a CLS risk until intrinsic size is otherwise reserved.
@@ -315,10 +315,10 @@ None of these exist in the prototype today:
 
 ## 16. Differences between the prototype and approved requirements
 
-- **Case-study project mapping** is resolved (section 3): approved case studies are VocApp, Vorwerk, and Guilds. Final content for each is a deferred input (section 17).
-- **UK and German phone numbers are required for the first release** (`AGENTS.md` section 10) but do not appear anywhere in the prototype. Deferred input (section 17).
-- **CV download links to `assets/cv.pdf`, which does not exist** in the prototype's asset folder. Deferred input (section 17).
-- **Portrait image is far lower resolution than its display size requires** (section 5/11): the pending replacement asset from decision 6.
+- **Case-study project mapping** is resolved (section 3): the production application includes approved public content for VocApp, Vorwerk, and Guilds.
+- **UK and German phone numbers do not appear in the prototype**, but both are present in the production application.
+- **The prototype CV link points to a missing `assets/cv.pdf` file**, but the production application includes the approved English CV.
+- **The prototype portrait is too small for production use** (section 5/11), so the production application uses the approved high-resolution replacement.
 - **Hourly/daily rate correctly does not appear anywhere**, matching the requirement in `AGENTS.md` section 10. No change needed.
 - **No localization structure exists**, which is expected at this stage. English, German, and French routes are a later, separately-planned requirement, not a prototype defect.
 
@@ -362,13 +362,13 @@ None of these exist in the prototype today:
 - Designing a missing-page (404) treatment.
 - Any visual treatment for empty states once case-study content becomes data-modelled.
 
-### 4. Content that requires confirmation or is a deferred input
+### 4. Content status and future approvals
 
-- Final approved case-study content (role, timeline, stack, metrics, quotes) for VocApp, Vorwerk, and Guilds. None of the current AnzaKen narrative, stats, or quote are approved and none should be reused or treated as a template for invented facts. The `#anzaken` markup structure may still be reused as a template. This is a deferred input, requested when needed during implementation rather than an open product decision.
-- UK and German phone numbers for the contact section: deferred input.
-- The English CV file (the download link currently points to a file that does not exist): deferred input.
+- The production application contains the current approved public case-study content for VocApp, Vorwerk, and Guilds. None of the prototype's original AnzaKen narrative, stats, or quote should be reused as factual content.
+- UK and German phone numbers are present in the production contact section.
+- The approved English CV is present in the production application.
 - The later German CV: deferred input, out of scope for the first release.
-- A high-resolution portrait source image: pending replacement asset.
+- The production application uses a high-resolution replacement portrait.
 
 The existing bio, company/employer names, and supplied logos are approved for the initial release and are not included in this list (decision 4).
 
@@ -380,11 +380,13 @@ The existing bio, company/employer names, and supplied logos are approved for th
 
 None remain from this analysis. The case-study project mapping (previously the main open conflict), navigation behaviour, and intro animation behaviour have all been resolved by the decisions recorded at the top of this document.
 
-### Deferred inputs (request when needed during implementation, not open product decisions)
+### Deferred inputs and current implementation status
 
-- Final approved case-study content for VocApp, Vorwerk, and Guilds.
+The current application now includes:
+
+- Public case-study content for VocApp, Vorwerk, and Guilds.
 - The English CV file.
-- The later German CV.
-- The UK telephone number.
-- The German telephone number.
-- A replacement high-resolution portrait image.
+- UK and German telephone numbers.
+- A replacement portrait image.
+
+Future revisions to those public assets and claims still require Lloyd's approval. The final German CV remains deferred.
