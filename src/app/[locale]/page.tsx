@@ -10,9 +10,8 @@ import enSite from '@/content/en/site.json';
 import deSite from '@/content/de/site.json';
 import frSite from '@/content/fr/site.json';
 
-// German is published alongside English. French content is prepared but
-// remains unpublished until its separate review is approved (architecture
-// section 8).
+// English, German, and French are published. Their content remains separated
+// by locale so future translation changes can be reviewed independently.
 const siteContentByLocale = { en: enSite, de: deSite, fr: frSite } as const;
 
 function getSiteContent(value: PublishedLocale) {

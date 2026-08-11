@@ -95,23 +95,22 @@ German content requires particular attention to professional meaning and natural
 
 ## 5. Current project phase
 
-The project is currently in the specification, prototype-analysis, and architecture-planning phase.
+The first production release is complete. The project is now in ongoing maintenance and incremental development.
 
-Before scaffolding the application, the agent must present:
+The first-release application architecture and folder structure are approved, implemented, and released. Treat `specs/architecture/application-architecture.md` as the technical source of truth and do not reopen approved decisions without a new requirement or identified conflict.
 
-- Recommended application architecture
-- Proposed folder structure
-- Rendering approach
-- Localization structure
-- Content structure
-- Styling organization
-- Testing strategy
-- Deployment approach
-- Important tradeoffs
+For remaining features and substantial changes, the agent must present:
 
-Scaffolding requires Lloyd’s explicit approval.
+- The problem and bounded scope
+- Relevant acceptance criteria
+- Affected architecture and integrations
+- Testing and validation approach
+- Important risks and tradeoffs
+- Any required content, visual, or release approvals
 
-After the architecture and implementation plan are approved, an agent may complete the approved work independently within the agreed scope.
+Do not re-scaffold the application or replace the approved structure. A substantial new feature, material architecture change, visible design change, public content change, or future production deployment still requires Lloyd’s explicit approval under sections 20 and 22.
+
+After a bounded implementation plan is approved, an agent may complete the approved stage independently within the agreed scope.
 
 ## 6. Sources of truth
 
@@ -366,7 +365,7 @@ Prefer:
 
 Do not prescribe an arbitrary component length. Refactor when a component has multiple responsibilities, becomes difficult to understand, or cannot be tested effectively.
 
-The exact folder structure and detailed code conventions will be proposed and approved before scaffolding.
+The approved folder structure and detailed code conventions are recorded in `specs/architecture/application-architecture.md`. Material changes require an updated decision record and Lloyd's approval.
 
 Lloyd may provide existing folder structures and representative code as references.
 

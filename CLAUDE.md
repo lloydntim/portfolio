@@ -15,19 +15,20 @@ Before planning or changing anything, read:
 
 ## Current phase
 
-The project is currently in specification, prototype-analysis, and architecture-planning.
+The first production release is complete. The project is now in ongoing maintenance and incremental development.
+
+The approved application architecture is implemented. Read `specs/architecture/application-architecture.md` before structural work and preserve its approved boundaries unless Lloyd approves a change.
 
 Do not:
 
-- Scaffold the Next.js application
-- Install application dependencies
-- Select the final folder structure
-- Begin production implementation
+- Re-scaffold the Next.js application
+- Replace the approved folder structure or architecture without approval
+- Add a material dependency outside an approved plan
 - Modify public content
 - Modify the prototype
-- Deploy the website
+- Push, merge, or deploy without the approvals in `AGENTS.md`
 
-These actions require an approved specification and explicit permission.
+Public content, visible design changes, major features, architecture changes, and future production deployments require an approved specification or bounded plan and explicit permission.
 
 ## Prototype
 
@@ -60,7 +61,7 @@ Use this order and spelling:
 
 VocApp is a vocabulary application developed for AnzaKen.
 
-The current case-study narratives are not approved factual content. Do not copy them into production or invent replacement claims.
+The case-study narratives inside `reference/prototype/` are not approved factual content. Do not copy them into production or invent replacement claims. The locale JSON files under `src/content/` contain the current public case-study copy and remain subject to Lloyd's factual and publication approval.
 
 Request approved case-study content from Lloyd when it becomes necessary.
 
@@ -119,7 +120,7 @@ Codex will provide an independent review of every pull request.
 
 ## Git and deployment
 
-You may create focused local commits after completing an approved stage, but never commit automatically. After finishing a feature, fix, or other coding task, ask Lloyd whether to commit it, rather than committing unprompted or silently leaving it uncommitted. This applies once the work is a complete, verified checkpoint (its own tests, typecheck, and lint pass) — not after every intermediate edit during an iterative or exploratory task, since asking at that granularity would interrupt more than it helps.
+You may create focused local commits after completing an approved stage, but never commit automatically. After finishing a feature, fix, or other coding task, ask Lloyd whether to commit it, rather than committing unprompted or silently leaving it uncommitted. This applies once the work is a complete, verified checkpoint with its own passing tests, typecheck, and lint, not after every intermediate edit during an iterative or exploratory task, since asking at that granularity would interrupt more than it helps.
 
 Do not:
 
@@ -130,7 +131,7 @@ Do not:
 - Rewrite shared history
 - Commit secrets or local environment files
 
-Netlify is the approved hosting direction, but deployment configuration will be finalized during architecture planning.
+Netlify is the approved and configured hosting provider. Preview and production validation follow the approval flow in `AGENTS.md`, and production deployment still requires separate permission.
 
 ## Communication
 
