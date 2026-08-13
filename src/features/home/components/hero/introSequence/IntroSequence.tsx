@@ -4,10 +4,12 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 
 const SESSION_KEY = 'introPlayed';
-// Matches the introHold keyframe's total duration below: holds at full
-// opacity 0.5s longer than before (to 78%, ~3.2s) before its ~0.9s fade-out,
-// so the logo doesn't disappear as soon as it finishes popping in.
-const HOLD_MS = 4100;
+// Safety net only: the video (5s) firing its 'ended' event is what normally
+// starts the fade-out, so the intro always plays out in full (the Skip
+// button is the intended way to end it early). This just guards against
+// 'ended' never firing at all - e.g. a blocked autoplay or a network error
+// stalling the video - well past the video's real length.
+const FALLBACK_MS = 8000;
 
 // `fetchPriority` on <video> is valid per the HTML living standard and is
 // what Lighthouse's LCP-discovery audit checks for on this element, but
@@ -49,6 +51,13 @@ function getAlreadyPlayedServerSnapshot(): boolean {
 export function IntroSequence({ webmSrc, mp4Src, posterSrc }: IntroSequenceProps) {
   const reducedMotion = useReducedMotion();
   const [dismissed, setDismissed] = useState(false);
+  // True once the video has actually finished: starts the fade-out. Kept
+  // separate from `dismissed`, which only flips once the fade-out animation
+  // itself has finished playing (onAnimationEnd below), so the overlay is
+  // still in the DOM, fading, rather than disappearing the instant the
+  // video ends. Skip bypasses this and calls `dismiss` directly - it's the
+  // "get me out now" control, not another 0.9s fade to wait through.
+  const [ending, setEnding] = useState(false);
   const alreadyPlayed = useSyncExternalStore(subscribe, getAlreadyPlayedSnapshot, getAlreadyPlayedServerSnapshot);
 
   const dismiss = () => {
@@ -56,11 +65,13 @@ export function IntroSequence({ webmSrc, mp4Src, posterSrc }: IntroSequenceProps
     setDismissed(true);
   };
 
+  const startFadeOut = () => setEnding(true);
+
   useEffect(() => {
-    if (reducedMotion || alreadyPlayed || dismissed) return;
-    const timer = setTimeout(dismiss, HOLD_MS);
+    if (reducedMotion || alreadyPlayed || dismissed || ending) return;
+    const timer = setTimeout(startFadeOut, FALLBACK_MS);
     return () => clearTimeout(timer);
-  }, [reducedMotion, alreadyPlayed, dismissed]);
+  }, [reducedMotion, alreadyPlayed, dismissed, ending]);
 
   if (reducedMotion || alreadyPlayed || dismissed) {
     return null;
@@ -69,7 +80,8 @@ export function IntroSequence({ webmSrc, mp4Src, posterSrc }: IntroSequenceProps
   return (
     <div
       id="intro-sequence"
-      className="absolute inset-0 z-30 flex items-center justify-center bg-black [animation:introHold_4.1s_ease_forwards]"
+      onAnimationEnd={ending ? dismiss : undefined}
+      className={`absolute inset-0 z-30 flex items-center justify-center bg-black ${ending ? '[animation:introFadeOut_.9s_ease_forwards]' : ''}`}
     >
       <video
         autoPlay
@@ -79,6 +91,7 @@ export function IntroSequence({ webmSrc, mp4Src, posterSrc }: IntroSequenceProps
         {...videoFetchPriority}
         width={1920}
         height={1080}
+        onEnded={startFadeOut}
         className="h-13.5 w-auto max-w-full opacity-0 [animation:logoPop_.6s_ease_.2s_forwards] md:h-22.5"
       >
         <source src={webmSrc} type="video/webm" />

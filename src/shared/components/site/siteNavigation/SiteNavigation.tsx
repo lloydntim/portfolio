@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useStickyNavigation } from '@/shared/hooks/useStickyNavigation';
@@ -39,6 +39,27 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
   const isHomePage = pathname === '/';
   const sectionIds = useMemo(() => links.map((link) => sectionIdOf(link.href)).filter((id): id is string => Boolean(id)), [links]);
   const activeSectionId = useActiveSection(sectionIds);
+
+  // Keeps the URL's hash matched to whichever section is active, so a
+  // scrolled-to section stays linkable/shareable/bookmarkable, and
+  // reloading or reopening the tab returns to it - the reason these are
+  // hash links at all. replaceState (not pushState) is what makes this
+  // safe: it never adds a history entry, so it can't turn the back button
+  // into "undo one scroll-triggered hash change at a time". Skips the
+  // first run so it doesn't fight a deep link's own initial scroll (e.g.
+  // opening /en#contact directly) before useActiveSection has resolved a
+  // real value from it.
+  const hasSyncedHashRef = useRef(false);
+  useEffect(() => {
+    if (!isHomePage) return;
+    if (!hasSyncedHashRef.current) {
+      hasSyncedHashRef.current = true;
+      return;
+    }
+    const url = `${window.location.pathname}${window.location.search}${activeSectionId ? `#${activeSectionId}` : ''}`;
+    window.history.replaceState(null, '', url);
+  }, [activeSectionId, isHomePage]);
+
   // While the mobile menu is open, the bar and the panel below it are both
   // solid (same colour), and everything else still visible on screen is
   // blurred instead, rather than the panel itself being translucent.
@@ -68,7 +89,7 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
           <Link
             href="/"
             aria-label="Home"
-            className={`relative inline-block ${isSticky ? 'h-3.25 md:h-5' : 'h-3.75 md:h-5.5'}`}
+            className={`relative inline-block ${isSticky ? 'h-6.5 md:h-5' : 'h-7.5 md:h-5.5'}`}
             style={{ aspectRatio: '96 / 20' }}
           >
             <Image src={logoSrc} alt={logoAlt} fill sizes="120px" className="object-contain object-left" preload />

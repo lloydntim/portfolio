@@ -21,13 +21,17 @@
   }
 }
 
-@keyframes introHold {
-  0%,
-  78% {
+/* Purely a fade-out: applied only once the intro video's 'ended' event (or
+   the Skip button) fires, rather than on a fixed schedule guessed to match
+   the video's length. A hold phase needs no keyframe of its own - the
+   overlay just sits at its default opacity: 1 until this class is added
+   (IntroSequence.tsx), so the video always plays to its natural end. */
+@keyframes introFadeOut {
+  from {
     opacity: 1;
     visibility: visible;
   }
-  100% {
+  to {
     opacity: 0;
     visibility: hidden;
   }
@@ -75,10 +79,11 @@ html[data-intro-played] #intro-sequence {
   display: none;
 }
 
-/* The hero text's fadeUp delays (3.7s-4.1s) exist to wait out the intro
-   overlay's screen time. For a returning visitor the overlay above is
-   already hidden, so there is nothing left to wait for: show the hero
-   text immediately instead of replaying the same multi-second delay. */
+/* The hero text's fadeUp delays (5.5s-5.9s) exist to wait out the intro
+   overlay's screen time (its 5s video plus a ~0.9s fade-out). For a
+   returning visitor the overlay above is already hidden, so there is
+   nothing left to wait for: show the hero text immediately instead of
+   replaying the same multi-second delay. */
 html[data-intro-played] .hero-fade {
   animation: none;
   opacity: 1;

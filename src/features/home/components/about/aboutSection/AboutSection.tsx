@@ -29,21 +29,10 @@ export function AboutSection({ eyebrow, heading, bio, cvLabel, cvHref, portraitA
   return (
     <div id="about" className="bg-bg-light py-13 text-text-on-light md:py-17 lg:py-19">
       <Container>
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[1fr_220px] md:items-start md:gap-x-10 lg:grid-cols-[1.2fr_180px_0.95fr] lg:gap-12">
-          <div>
+        <div className="flex flex-col items-center gap-8 md:grid md:grid-cols-[1fr_220px] md:grid-rows-[auto_auto_auto_auto] md:items-start md:gap-x-10 md:gap-y-0 lg:grid-cols-[1.2fr_180px_0.95fr] lg:grid-rows-[auto_auto_auto] lg:gap-x-12">
+          <div className="order-1 self-stretch md:col-start-1 md:row-start-1">
             <SectionEyebrow>{eyebrow}</SectionEyebrow>
-            <h2 className="mb-5.5 mt-5.5 font-heading text-[27px] font-bold leading-[1.2] tracking-[-1px]">
-              {heading}
-            </h2>
-            <p className="mb-7 text-base leading-[1.7] text-body-light">{bio}</p>
-            <Button href={cvHref} download size="md">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <path d="M7 10l5 5 5-5" />
-                <path d="M12 15V3" />
-              </svg>
-              {cvLabel}
-            </Button>
+            <h2 className="mt-5.5 font-heading text-[27px] font-bold leading-[1.2] tracking-[-1px] md:mb-5.5">{heading}</h2>
           </div>
 
           <Image
@@ -51,10 +40,12 @@ export function AboutSection({ eyebrow, heading, bio, cvLabel, cvHref, portraitA
             alt={portraitAlt}
             width={1055}
             height={1266}
-            className="mx-auto block aspect-5/6 w-full max-w-[280px] object-cover object-top md:max-w-none"
+            className="order-2 mx-auto block aspect-5/6 w-full max-w-[280px] object-cover object-top md:col-start-2 md:row-span-3 md:row-start-1 md:max-w-none"
           />
 
-          <div className="col-span-full flex flex-col gap-5.5 md:col-span-2 lg:col-span-1">
+          <p className="order-3 self-stretch text-base leading-[1.7] text-body-light md:col-start-1 md:row-start-2 md:mb-7">{bio}</p>
+
+          <div className="order-4 flex self-stretch flex-col gap-5.5 md:col-span-2 md:col-start-1 md:row-start-4 md:mt-8 lg:col-span-1 lg:col-start-3 lg:row-span-3 lg:row-start-1 lg:mt-0">
             {checklist.map((item, index) => (
               <div key={item} className="flex items-center gap-4">
                 <span className="flex-none text-accent" aria-hidden="true">
@@ -69,6 +60,15 @@ export function AboutSection({ eyebrow, heading, bio, cvLabel, cvHref, portraitA
               </div>
             ))}
           </div>
+
+          <Button href={cvHref} download size="md" className="order-5 self-start md:col-start-1 md:row-start-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <path d="M7 10l5 5 5-5" />
+              <path d="M12 15V3" />
+            </svg>
+            {cvLabel}
+          </Button>
         </div>
       </Container>
     </div>
