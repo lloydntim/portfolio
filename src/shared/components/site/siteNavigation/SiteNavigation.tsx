@@ -89,7 +89,7 @@ export function SiteNavigation({ logoSrc, logoAlt, links, startsOverHero = false
           <Link
             href="/"
             aria-label="Home"
-            className={`relative inline-block ${isSticky ? 'h-3.25 md:h-5' : 'h-3.75 md:h-5.5'}`}
+            className={`relative inline-block ${isSticky ? 'h-6.5 md:h-5' : 'h-7.5 md:h-5.5'}`}
             style={{ aspectRatio: '96 / 20' }}
           >
             <Image src={logoSrc} alt={logoAlt} fill sizes="120px" className="object-contain object-left" preload />
