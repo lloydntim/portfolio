@@ -4,6 +4,7 @@ import { SiteNavigation, type SiteNavigationLink } from '@/shared/components/sit
 import { SiteFooter } from '@/shared/components/site/siteFooter/SiteFooter';
 import { CaseStudyArticle, getAllCaseStudies, getCaseStudy } from '@/features/caseStudies';
 import type { Locale, PublishedLocale } from '@/i18n/routing';
+import { buildLocaleAlternates } from '@/i18n/alternates';
 import enSite from '@/content/en/site.json';
 import deSite from '@/content/de/site.json';
 import frSite from '@/content/fr/site.json';
@@ -42,8 +43,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const activeLocale = (await locale()) as PublishedLocale;
   const caseStudy = await getCaseStudy(slug, 'en');
-  return { title: caseStudy.title, description: caseStudy.summary };
+  return {
+    title: caseStudy.title,
+    description: caseStudy.summary,
+    alternates: buildLocaleAlternates(activeLocale, `/case-studies/${slug}`),
+  };
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {

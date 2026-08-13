@@ -3,7 +3,8 @@ import type { ReactNode } from 'react';
 import { locale } from 'next/root-params';
 import { Montserrat, Roboto, Open_Sans } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { publishedLocales } from '@/i18n/routing';
+import { publishedLocales, type PublishedLocale } from '@/i18n/routing';
+import { buildLocaleAlternates } from '@/i18n/alternates';
 import '../globals.css';
 
 const montserrat = Montserrat({
@@ -29,21 +30,32 @@ const openSans = Open_Sans({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://lloydntim.com';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: 'Lloyd Ntim | Product Engineer',
-    template: '%s | Lloyd Ntim',
-  },
-  description: 'Product, full-stack and agentic engineering for enterprise and consumer brands.',
-  robots: { index: true, follow: true },
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: 'any' },
-    ],
-  },
-};
+// A function (not a static object) so the locale segment can build this
+// page's own canonical + hreflang alternates (architecture section 8). A
+// more specific page's own generateMetadata (e.g. case studies) fully
+// replaces `alternates` rather than merging into it - Next.js metadata
+// merging is shallow per top-level key - so this is only the default for
+// routes that don't define their own, i.e. the homepage.
+export async function generateMetadata(): Promise<Metadata> {
+  const activeLocale = (await locale()) as PublishedLocale;
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: 'Lloyd Ntim | Product Engineer',
+      template: '%s | Lloyd Ntim',
+    },
+    description: 'Product, full-stack and agentic engineering for enterprise and consumer brands.',
+    robots: { index: true, follow: true },
+    alternates: buildLocaleAlternates(activeLocale),
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+        { url: '/favicon.ico', sizes: 'any' },
+      ],
+    },
+  };
+}
 
 export function generateStaticParams() {
   return publishedLocales.map((value) => ({ locale: value }));
