@@ -32,6 +32,8 @@ Give Lloyd visibility into how visitors use the portfolio site:
 - Session recording is explicitly disabled (`disable_session_recording: true`). It wasn't requested, and it's the most invasive PostHog capability (DOM capture) — leaving it off keeps the footprint to what was actually asked for.
 - Autocapture (PostHog's automatic capture of generic clicks/inputs) stays on as a low-cost bonus signal alongside the named events below.
 
+**Project-level prerequisite, discovered during implementation testing:** `cookieless_mode: 'always'` on the client is not sufficient by itself. PostHog requires **"Cookieless server hash mode"** to also be enabled in the PostHog project's own settings (Web analytics section) — without it, the client SDK initializes normally (config and extension scripts load fine) but every `capture()` call is a silent no-op; nothing is ever sent, with no error surfaced anywhere. This is a one-time dashboard setting, not a code change, and is now part of Task 8 in the implementation plan.
+
 ## Integration
 
 ### Client init

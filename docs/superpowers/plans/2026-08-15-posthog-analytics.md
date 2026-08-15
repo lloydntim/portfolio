@@ -483,6 +483,7 @@ git commit -m "feat: proxy PostHog requests through /ingest to reduce ad-blocker
 **This task is for Lloyd, not the implementing agent.** It requires the Netlify dashboard, which is outside this repo and outside what an agent should touch without deploy-related approval.
 
 - [ ] In the PostHog EU Cloud project settings, copy the Project API Key (public token — safe to expose client-side) and note the EU ingest host `https://eu.i.posthog.com`.
+- [ ] **In the same PostHog project settings, under Web analytics, enable "Cookieless server hash mode."** Confirmed during implementation testing: `cookieless_mode: 'always'` on the client does nothing without this project-level setting also enabled — the SDK initializes fine but silently drops every event with no error. This is required for any data to appear at all, not an optional hardening step.
 - [ ] In Netlify → Site settings → Environment variables, add, scoped to the **Production** deploy context only:
   - `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` = the PostHog project API key
   - `NEXT_PUBLIC_POSTHOG_HOST` = `https://eu.i.posthog.com` (kept as a reference value; the app itself talks to `/ingest`, not this host directly — see Task 5)
