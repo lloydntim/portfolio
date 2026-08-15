@@ -52,11 +52,14 @@ if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN) {
     person_profiles: 'never',
     disable_session_recording: true,
     capture_pageview: 'history_change',
+    disable_compression: true,
   });
 }
 ```
 
 The `if` guard means analytics only activates when the token env var is present. The token is set only in Netlify's **Production** deploy context, so branch deploys, deploy previews, and local dev never send events — no environment-detection logic needed in code.
+
+**`disable_compression: true`, discovered post-deploy:** PostHog's default gzip-compressed request bodies arrive corrupted after passing through Netlify's edge and the `/ingest` rewrite (`400: failed to parse request`), even though the identical code path works locally where no Netlify edge is involved. Disabling compression avoids the failure; capture payloads are small enough that the bandwidth cost is negligible.
 
 ### Reverse proxy (`/ingest`)
 
