@@ -1,8 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import posthog from 'posthog-js';
 import { ContactForm, type ContactFormCopy } from './ContactForm';
 import * as contactDelivery from '../../../helpers/contactDelivery';
+
+vi.mock('posthog-js', () => ({
+  default: { capture: vi.fn() },
+}));
 
 const copy: ContactFormCopy = {
   nameLabel: 'Your name',
@@ -27,6 +32,7 @@ async function fillAndSubmit({ name, email, message }: { name: string; email: st
 describe('ContactForm', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.mocked(posthog.capture).mockClear();
   });
 
   it('shows validation errors and does not call the delivery abstraction for invalid input', async () => {
@@ -48,6 +54,7 @@ describe('ContactForm', () => {
     await waitFor(() => {
       expect(screen.getByText('Thanks, your message has been sent.')).toBeInTheDocument();
     });
+    expect(posthog.capture).toHaveBeenCalledWith('contact_form_submitted', { result: 'success' });
   });
 
   it('shows a submission-failure message when delivery fails', async () => {
@@ -57,5 +64,6 @@ describe('ContactForm', () => {
     await fillAndSubmit({ name: 'Lloyd', email: 'lloyd@example.com', message: 'Hello' });
 
     expect(await screen.findByText('Something went wrong sending your message.')).toBeInTheDocument();
+    expect(posthog.capture).toHaveBeenCalledWith('contact_form_submitted', { result: 'network-error' });
   });
 });
