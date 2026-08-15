@@ -10,6 +10,13 @@ if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN) {
     person_profiles: 'never',
     disable_session_recording: true,
     capture_pageview: 'history_change',
+    // PostHog's gzip-compressed capture request bodies arrive corrupted
+    // ("failed to parse request" / "invalid UTF8") after passing through
+    // Netlify's edge + the /ingest rewrite, even though the identical
+    // request works fine locally where no Netlify edge is involved.
+    // Disabling compression avoids the failure entirely; capture payloads
+    // are small enough that the bandwidth cost is negligible.
+    disable_compression: true,
   });
 
   document.addEventListener('click', (event) => {
