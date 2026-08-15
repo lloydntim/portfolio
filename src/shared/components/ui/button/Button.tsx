@@ -3,6 +3,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 type ButtonBaseProps = {
   size?: 'md' | 'lg';
   className?: string;
+  analyticsEvent?: string;
 };
 
 type ButtonAsButton = ButtonBaseProps &
@@ -21,13 +22,13 @@ const sizeClasses: Record<NonNullable<ButtonBaseProps['size']>, string> = {
   lg: 'px-[30px] py-4 text-[15px]',
 };
 
-export function Button({ size = 'lg', className, ...props }: ButtonProps) {
+export function Button({ size = 'lg', className, analyticsEvent, ...props }: ButtonProps) {
   const classes = [base, sizeClasses[size], className].filter(Boolean).join(' ');
 
   if ('href' in props && props.href !== undefined) {
     const { href, ...rest } = props;
     return (
-      <a href={href} className={classes} {...rest}>
+      <a href={href} className={classes} data-ph-event={analyticsEvent} {...rest}>
         {props.children}
       </a>
     );
@@ -35,7 +36,7 @@ export function Button({ size = 'lg', className, ...props }: ButtonProps) {
 
   const { children, ...rest } = props as ButtonAsButton;
   return (
-    <button className={classes} {...rest}>
+    <button className={classes} data-ph-event={analyticsEvent} {...rest}>
       {children}
     </button>
   );

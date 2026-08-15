@@ -20,4 +20,15 @@ describe('Button', () => {
     const link = screen.getByRole('link', { name: 'Download CV' });
     expect(link).toHaveAttribute('href', '/cv/lloyd-ntim-cv-en.pdf');
   });
+
+  it('renders a data-ph-event attribute when analyticsEvent is set', () => {
+    render(
+      <Button href="/cv/lloyd-ntim-cv-en.pdf" analyticsEvent="cv_download">
+        Download CV
+      </Button>,
+    );
+
+    const link = screen.getByRole('link', { name: 'Download CV' });
+    expect(link).toHaveAttribute('data-ph-event', 'cv_download');
+  });
 });
