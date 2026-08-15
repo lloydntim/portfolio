@@ -43,9 +43,20 @@ test('contact options and the English CV are available', async ({ page, request 
   await expect(page.getByRole('link', { name: /^UK / })).toHaveAttribute('href', 'tel:+447908520696');
   await expect(page.getByRole('link', { name: /^DE / })).toHaveAttribute('href', 'tel:+4917665708605');
 
-  const cvLink = page.getByRole('link', { name: 'Download CV (English)' });
+  const cvLink = page.getByRole('link', { name: 'Download CV' });
   await expect(cvLink).toHaveAttribute('download', '');
   const cvResponse = await request.get('/cv/lloyd-ntim-cv-en.pdf');
+  expect(cvResponse.ok()).toBe(true);
+  expect(cvResponse.headers()['content-type']).toBe('application/pdf');
+});
+
+test('the German CV is available on the de locale', async ({ page, request }) => {
+  await page.goto('/de');
+
+  const cvLink = page.getByRole('link', { name: 'Lebenslauf herunterladen' });
+  await expect(cvLink).toHaveAttribute('download', '');
+  await expect(cvLink).toHaveAttribute('href', '/cv/lloyd-ntim-cv-de.pdf');
+  const cvResponse = await request.get('/cv/lloyd-ntim-cv-de.pdf');
   expect(cvResponse.ok()).toBe(true);
   expect(cvResponse.headers()['content-type']).toBe('application/pdf');
 });
