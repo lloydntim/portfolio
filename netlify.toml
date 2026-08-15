@@ -11,3 +11,12 @@
 
 [build.environment]
   NODE_VERSION = "24"
+  # NEXT_PUBLIC_POSTHOG_HOST is a NEXT_PUBLIC_* variable: by Next.js
+  # convention it's meant to be public and ships in the client bundle
+  # (specs/architecture/analytics.md). Its value (a plain PostHog API
+  # hostname, not a credential) legitimately appears in next.config.ts's
+  # rewrites and in docs, which Netlify's secrets scanner otherwise
+  # flags as a false-positive leak and fails the build on. The actual
+  # secret, NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN, is not committed anywhere
+  # and is intentionally left out of this list so it stays scanned.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_POSTHOG_HOST"
