@@ -1,7 +1,12 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { contactFormSchema, type ContactFormData, type ContactFormErrors } from '../../../schema';
+import posthog from 'posthog-js';
+import {
+  contactFormSchema,
+  type ContactFormData,
+  type ContactFormErrors,
+} from '../../../schema';
 import { submitContact } from '../../../helpers/contactDelivery';
 
 export type ContactFormCopy = {
@@ -20,7 +25,12 @@ export type ContactFormProps = {
   copy: ContactFormCopy;
 };
 
-type Status = 'idle' | 'submitting' | 'success' | 'validation-error' | 'submission-failure';
+type Status =
+  | 'idle'
+  | 'submitting'
+  | 'success'
+  | 'validation-error'
+  | 'submission-failure';
 
 const fieldClass =
   'w-full bg-white/[0.16] px-4.5 py-4 font-body text-[15px] text-white placeholder:text-[#c9c7c4] outline-none focus:outline-2 focus:outline-accent focus:-outline-offset-2';
@@ -63,6 +73,7 @@ export function ContactForm({ copy }: ContactFormProps) {
     setErrors({});
     setStatus('submitting');
     const delivery = await submitContact(result.data);
+    posthog.capture('contact_form_submitted', { result: delivery.ok ? 'success' : delivery.error });
     setStatus(delivery.ok ? 'success' : 'submission-failure');
     if (delivery.ok) {
       form.reset();
@@ -92,7 +103,12 @@ export function ContactForm({ copy }: ContactFormProps) {
       <p className="absolute h-px w-px overflow-hidden">
         <label>
           {copy.honeypotLabel}
-          <input name="bot-field" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+          <input
+            name="bot-field"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
         </label>
       </p>
 
@@ -101,7 +117,14 @@ export function ContactForm({ copy }: ContactFormProps) {
           <label htmlFor="contact-name" className="sr-only">
             {copy.nameLabel}
           </label>
-          <input id="contact-name" className={fieldClass} type="text" name="name" placeholder={copy.nameLabel} required />
+          <input
+            id="contact-name"
+            className={fieldClass}
+            type="text"
+            name="name"
+            placeholder={copy.nameLabel}
+            required
+          />
           {errors.name ? (
             <p className="mt-1.5 text-sm text-accent-hover" role="alert">
               {errors.name}
@@ -112,7 +135,14 @@ export function ContactForm({ copy }: ContactFormProps) {
           <label htmlFor="contact-email" className="sr-only">
             {copy.emailLabel}
           </label>
-          <input id="contact-email" className={fieldClass} type="email" name="email" placeholder={copy.emailLabel} required />
+          <input
+            id="contact-email"
+            className={fieldClass}
+            type="email"
+            name="email"
+            placeholder={copy.emailLabel}
+            required
+          />
           {errors.email ? (
             <p className="mt-1.5 text-sm text-accent-hover" role="alert">
               {errors.email}
