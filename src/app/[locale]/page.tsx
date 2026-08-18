@@ -31,7 +31,7 @@ export default async function HomePage() {
       <main>
         <HeroImage {...content.hero} />
 
-        <AboutSection {...content.about} />
+        <AboutSection {...content.about} githubHref={content.footer.githubHref} linkedinHref={content.footer.linkedinHref} />
 
         <ExpertiseGrid eyebrow={content.expertise.eyebrow} cards={content.expertise.cards} />
 
