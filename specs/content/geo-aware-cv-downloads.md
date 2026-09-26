@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft, awaiting Lloyd's approval (2026-09-26).
+Approved by Lloyd (2026-09-26).
 
 Builds on `specs/content/locale-cv-downloads.md`, which made the CV download per-locale. This spec adds one country-based rule to the `en` locale and replaces all three CV PDFs with the versions Lloyd provided on 2026-09-24.
 
