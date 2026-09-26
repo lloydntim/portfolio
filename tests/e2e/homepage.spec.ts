@@ -43,11 +43,17 @@ test('contact options and the English CV are available', async ({ page, request 
   await expect(page.getByRole('link', { name: /^UK / })).toHaveAttribute('href', 'tel:+447908520696');
   await expect(page.getByRole('link', { name: /^DE / })).toHaveAttribute('href', 'tel:+4917665708605');
 
+  // /cv/en is resolved by Netlify's country redirect (netlify.toml), which
+  // `next start` does not apply, so only the link and both redirect targets
+  // are checked here. The redirect itself is verified on a deploy preview.
   const cvLink = page.getByRole('link', { name: 'Download CV' });
   await expect(cvLink).toHaveAttribute('download', '');
-  const cvResponse = await request.get('/cv/lloyd-ntim-cv-en.pdf');
-  expect(cvResponse.ok()).toBe(true);
-  expect(cvResponse.headers()['content-type']).toBe('application/pdf');
+  await expect(cvLink).toHaveAttribute('href', '/cv/en');
+  for (const pdf of ['/cv/lloyd-ntim-cv-en.pdf', '/cv/lloyd-ntim-cv-uk.pdf']) {
+    const cvResponse = await request.get(pdf);
+    expect(cvResponse.ok()).toBe(true);
+    expect(cvResponse.headers()['content-type']).toBe('application/pdf');
+  }
 });
 
 test('the German CV is available on the de locale', async ({ page, request }) => {
