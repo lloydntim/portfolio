@@ -61,7 +61,11 @@ export function HeroImage({ titleAccent, titleRest, subtitle }: HeroImageProps) 
           aria-hidden="true"
           className="absolute left-1/2 top-1/2 z-0 h-[220%] w-[150%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_60%_65%_at_50%_50%,rgba(0,0,0,.55),transparent_72%)]"
         />
-        <h1 className="hero-fade relative mt-4 mb-2 min-h-[2.1em] font-heading text-[4.7rem] font-bold leading-[1.05] tracking-[-0.02em] text-white opacity-0 [animation:fadeUp_.9s_ease_5.5s_forwards] [text-shadow:0_4px_20px_rgba(0,0,0,.65)] xs:mt-0 xs:mb-3.5 xs:min-h-[1.05em] xs:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:text-[5.15625rem]">
+        {/* Below the xs breakpoint the title breaks onto two lines, and "Engineer"
+            is about 4.6em wide. A fixed 4.7rem overflowed the 2rem side padding
+            (off-centre at 390px, clipped from 375px down), so the size caps at
+            4.7rem and shrinks so the word always fits between the paddings. */}
+        <h1 className="hero-fade relative mt-4 mb-2 min-h-[2.1em] font-heading text-[length:min(4.7rem,calc((100vw_-_4rem)/4.7))] font-bold leading-[1.05] tracking-[-0.02em] text-white opacity-0 [animation:fadeUp_.9s_ease_5.5s_forwards] [text-shadow:0_4px_20px_rgba(0,0,0,.65)] xs:mt-0 xs:mb-3.5 xs:min-h-[1.05em] xs:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] xl:text-[5.15625rem]">
           <span className="text-accent-mid">{titleAccent}</span> {titleRest}
         </h1>
         <p className="hero-fade relative mx-auto max-w-[480px] text-[15px] leading-[1.3] text-[#f0efec] opacity-0 [animation:fadeUp_.9s_ease_5.7s_forwards] [text-shadow:0_2px_12px_rgba(0,0,0,.6)] xs:leading-[1.6] md:max-w-[520px] md:text-[17px] lg:text-[18px]">
