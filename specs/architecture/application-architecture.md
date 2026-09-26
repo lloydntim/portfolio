@@ -423,9 +423,11 @@ import { routing } from './i18n/routing';
 export default createMiddleware(routing);
 
 export const config = {
-  matcher: '/((?!api|_next|_vercel|.*\\..*).*)',
+  matcher: '/((?!api|_next|_vercel|ingest|cv/|.*\\..*).*)',
 };
 ```
+
+Beyond next-intl's defaults, the matcher excludes `ingest` (the PostHog proxy, `specs/architecture/analytics.md`) and `cv/` (CV downloads, which Netlify resolves by visitor country before the request reaches Next.js, `specs/content/geo-aware-cv-downloads.md`).
 
 This is next-intl's documented approach, current as of its own example App Router project. On a first visit to `/`, it redirects based on the `Accept-Language` header (falling back to the default locale, `en`); on return visits it honours a cookie recording the visitor's chosen locale, so a visitor who switched to `de` is not redirected back to `en`. This is not a manual `redirect()` call written by this application; it is next-intl's routing handler applied to the incoming request before it reaches `src/app`.
 

@@ -10,6 +10,15 @@ describe('proxy matcher', () => {
     expect(matcher.test('/ingest/array/token/config.js')).toBe(false);
   });
 
+  it('excludes /cv/ so Netlify country redirects for CV downloads skip locale routing', () => {
+    expect(matcher.test('/cv/en')).toBe(false);
+    expect(matcher.test('/cv/lloyd-ntim-cv-uk.pdf')).toBe(false);
+  });
+
+  it('still matches page paths that only start with "cv"', () => {
+    expect(matcher.test('/cvs')).toBe(true);
+  });
+
   it('still matches ordinary page paths', () => {
     expect(matcher.test('/en')).toBe(true);
     expect(matcher.test('/en/case-studies/vorwerk')).toBe(true);
