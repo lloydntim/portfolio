@@ -22,15 +22,16 @@
   SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_POSTHOG_HOST"
 
 # Geo-aware CV download (specs/content/geo-aware-cv-downloads.md). The `en`
-# locale's CV button links to /cv/en. Netlify applies the first matching
-# rule, so the GB rule must stay above the unconditional fallback. 302 keeps
+# locale's CV button links to /cv/en. Visitors in the UK (GB) and the
+# Republic of Ireland (IE) get the UK CV. Netlify applies the first matching
+# rule, so the GB/IE rule must stay above the unconditional fallback. 302 keeps
 # browsers and caches from remembering one visitor's country decision.
 # /cv/ is excluded from src/proxy.ts's matcher so next-intl never sees it.
 [[redirects]]
   from = "/cv/en"
   to = "/cv/lloyd-ntim-cv-uk.pdf"
   status = 302
-  conditions = { Country = ["GB"] }
+  conditions = { Country = ["GB", "IE"] }
 
 [[redirects]]
   from = "/cv/en"

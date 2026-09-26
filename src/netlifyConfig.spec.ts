@@ -24,10 +24,10 @@ function readRedirects(): Redirect[] {
 describe('netlify.toml CV redirects', () => {
   const cvRules = readRedirects().filter((rule) => rule.from === '/cv/en');
 
-  it('sends UK visitors to the UK CV before the fallback applies', () => {
+  it('sends UK and Irish visitors to the UK CV before the fallback applies', () => {
     expect(cvRules).toHaveLength(2);
     expect(cvRules[0]).toMatchObject({ to: '/cv/lloyd-ntim-cv-uk.pdf' });
-    expect(cvRules[0].conditions).toMatch(/Country\s*=\s*\["GB"\]/);
+    expect(cvRules[0].conditions).toMatch(/Country\s*=\s*\["GB",\s*"IE"\]/);
   });
 
   it('sends everyone else to the English version of the German CV', () => {
